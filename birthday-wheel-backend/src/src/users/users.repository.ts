@@ -12,22 +12,22 @@ export class UsersRepository {
     email: string;
     storeName: string;
   }): Promise<User> {
-    return this.prisma.user.create({ data });
+    return this.prisma.client.user.create({ data });
   }
 
   async getCount(): Promise<number> {
-    return this.prisma.user.count();
+    return this.prisma.client.user.count();
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    return this.prisma.user.findFirst({
+    return this.prisma.client.user.findFirst({
       where: { email },
       include: { sessions: true },
     });
   }
 
   async findByPhone(phone: string): Promise<User | null> {
-    return this.prisma.user.findUnique({
+    return this.prisma.client.user.findUnique({
       where: { phone },
       include: { sessions: true },
     });
