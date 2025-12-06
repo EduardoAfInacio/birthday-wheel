@@ -1,0 +1,70 @@
+services:
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: birthday-wheel-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: birthday_wheel
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - birthday-wheel-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: birthday-wheel-redis
+    restart: unless-stopped
+    command: redis-server --requirepass 123 --maxmemory 256mb --maxmemory-policy allkeys-lru
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    networks:
+      - birthday-wheel-network
+
+  # Redis Commander (Redis GUI - opcional, para desenvolvimento)
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: birthday-wheel-redis-commander
+    restart: unless-stopped
+    environment:
+      REDIS_HOSTS: local:redis:6379:0:123
+    ports:
+      - '8081:8081'
+    networks:
+      - birthday-wheel-network
+    depends_on:
+      - redis
+    profiles:
+      - dev
+
+  # MailHog (SMTP server para testes - opcional, para desenvolvimento)
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: birthday-wheel-mailhog
+    restart: unless-stopped
+    ports:
+      - '1025:1025' # SMTP server
+      - '8025:8025' # Web UI
+    networks:
+      - birthday-wheel-network
+    profiles:
+      - dev
+
+networks:
+  birthday-wheel-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+  redis_data:
+    driver: local
