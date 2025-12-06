@@ -7,11 +7,12 @@ import {
   Matches,
 } from 'class-validator';
 
-export class CreateUserDto {
+export class ParticipateRequestDto {
   @ApiProperty({
     description: "User's full name",
     example: 'John Smith',
     minLength: 3,
+    maxLength: 50,
   })
   @IsString()
   @IsNotEmpty({ message: 'Name is required' })

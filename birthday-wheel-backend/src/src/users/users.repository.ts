@@ -3,8 +3,17 @@ import { PrismaService } from '../prisma/prisma.service';
 import { User } from '../../generated/prisma/client';
 
 @Injectable()
-export class UserRepository {
+export class UsersRepository {
   constructor(private readonly prisma: PrismaService) {}
+
+  async create(data: {
+    name: string;
+    phone: string;
+    email: string;
+    storeName: string;
+  }): Promise<User> {
+    return this.prisma.user.create({ data });
+  }
 
   async getCount(): Promise<number> {
     return this.prisma.user.count();
