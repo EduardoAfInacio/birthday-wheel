@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude, Expose, Transform } from 'class-transformer';
-import { Decimal } from '../../../generated/prisma/internal/prismaNamespace';
+import { Exclude, Expose } from 'class-transformer';
 
 export class PrizeResponseDto {
   @ApiProperty({
