@@ -28,16 +28,18 @@ export type AggregatePrize = {
 
 export type PrizeAvgAggregateOutputType = {
   id: number | null
+  price: runtime.Decimal | null
   stock: number | null
   initialStock: number | null
-  weight: number | null
+  weight: runtime.Decimal | null
 }
 
 export type PrizeSumAggregateOutputType = {
   id: number | null
+  price: runtime.Decimal | null
   stock: number | null
   initialStock: number | null
-  weight: number | null
+  weight: runtime.Decimal | null
 }
 
 export type PrizeMinAggregateOutputType = {
@@ -46,9 +48,10 @@ export type PrizeMinAggregateOutputType = {
   description: string | null
   imageUrl: string | null
   color: string | null
+  price: runtime.Decimal | null
   stock: number | null
   initialStock: number | null
-  weight: number | null
+  weight: runtime.Decimal | null
   isActive: boolean | null
   isLoss: boolean | null
   createdAt: Date | null
@@ -61,9 +64,10 @@ export type PrizeMaxAggregateOutputType = {
   description: string | null
   imageUrl: string | null
   color: string | null
+  price: runtime.Decimal | null
   stock: number | null
   initialStock: number | null
-  weight: number | null
+  weight: runtime.Decimal | null
   isActive: boolean | null
   isLoss: boolean | null
   createdAt: Date | null
@@ -76,6 +80,7 @@ export type PrizeCountAggregateOutputType = {
   description: number
   imageUrl: number
   color: number
+  price: number
   stock: number
   initialStock: number
   weight: number
@@ -89,6 +94,7 @@ export type PrizeCountAggregateOutputType = {
 
 export type PrizeAvgAggregateInputType = {
   id?: true
+  price?: true
   stock?: true
   initialStock?: true
   weight?: true
@@ -96,6 +102,7 @@ export type PrizeAvgAggregateInputType = {
 
 export type PrizeSumAggregateInputType = {
   id?: true
+  price?: true
   stock?: true
   initialStock?: true
   weight?: true
@@ -107,6 +114,7 @@ export type PrizeMinAggregateInputType = {
   description?: true
   imageUrl?: true
   color?: true
+  price?: true
   stock?: true
   initialStock?: true
   weight?: true
@@ -122,6 +130,7 @@ export type PrizeMaxAggregateInputType = {
   description?: true
   imageUrl?: true
   color?: true
+  price?: true
   stock?: true
   initialStock?: true
   weight?: true
@@ -137,6 +146,7 @@ export type PrizeCountAggregateInputType = {
   description?: true
   imageUrl?: true
   color?: true
+  price?: true
   stock?: true
   initialStock?: true
   weight?: true
@@ -239,9 +249,10 @@ export type PrizeGroupByOutputType = {
   description: string | null
   imageUrl: string | null
   color: string | null
+  price: runtime.Decimal
   stock: number
   initialStock: number
-  weight: number
+  weight: runtime.Decimal
   isActive: boolean
   isLoss: boolean
   createdAt: Date
@@ -277,9 +288,10 @@ export type PrizeWhereInput = {
   description?: Prisma.StringNullableFilter<"Prize"> | string | null
   imageUrl?: Prisma.StringNullableFilter<"Prize"> | string | null
   color?: Prisma.StringNullableFilter<"Prize"> | string | null
+  price?: Prisma.DecimalFilter<"Prize"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   stock?: Prisma.IntFilter<"Prize"> | number
   initialStock?: Prisma.IntFilter<"Prize"> | number
-  weight?: Prisma.IntFilter<"Prize"> | number
+  weight?: Prisma.DecimalFilter<"Prize"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFilter<"Prize"> | boolean
   isLoss?: Prisma.BoolFilter<"Prize"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Prize"> | Date | string
@@ -293,6 +305,7 @@ export type PrizeOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   color?: Prisma.SortOrderInput | Prisma.SortOrder
+  price?: Prisma.SortOrder
   stock?: Prisma.SortOrder
   initialStock?: Prisma.SortOrder
   weight?: Prisma.SortOrder
@@ -312,9 +325,10 @@ export type PrizeWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Prize"> | string | null
   imageUrl?: Prisma.StringNullableFilter<"Prize"> | string | null
   color?: Prisma.StringNullableFilter<"Prize"> | string | null
+  price?: Prisma.DecimalFilter<"Prize"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   stock?: Prisma.IntFilter<"Prize"> | number
   initialStock?: Prisma.IntFilter<"Prize"> | number
-  weight?: Prisma.IntFilter<"Prize"> | number
+  weight?: Prisma.DecimalFilter<"Prize"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFilter<"Prize"> | boolean
   isLoss?: Prisma.BoolFilter<"Prize"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Prize"> | Date | string
@@ -328,6 +342,7 @@ export type PrizeOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   color?: Prisma.SortOrderInput | Prisma.SortOrder
+  price?: Prisma.SortOrder
   stock?: Prisma.SortOrder
   initialStock?: Prisma.SortOrder
   weight?: Prisma.SortOrder
@@ -351,9 +366,10 @@ export type PrizeScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Prize"> | string | null
   imageUrl?: Prisma.StringNullableWithAggregatesFilter<"Prize"> | string | null
   color?: Prisma.StringNullableWithAggregatesFilter<"Prize"> | string | null
+  price?: Prisma.DecimalWithAggregatesFilter<"Prize"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   stock?: Prisma.IntWithAggregatesFilter<"Prize"> | number
   initialStock?: Prisma.IntWithAggregatesFilter<"Prize"> | number
-  weight?: Prisma.IntWithAggregatesFilter<"Prize"> | number
+  weight?: Prisma.DecimalWithAggregatesFilter<"Prize"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolWithAggregatesFilter<"Prize"> | boolean
   isLoss?: Prisma.BoolWithAggregatesFilter<"Prize"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Prize"> | Date | string
@@ -365,9 +381,10 @@ export type PrizeCreateInput = {
   description?: string | null
   imageUrl?: string | null
   color?: string | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
   stock?: number
   initialStock?: number
-  weight?: number
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: boolean
   isLoss?: boolean
   createdAt?: Date | string
@@ -381,9 +398,10 @@ export type PrizeUncheckedCreateInput = {
   description?: string | null
   imageUrl?: string | null
   color?: string | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
   stock?: number
   initialStock?: number
-  weight?: number
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: boolean
   isLoss?: boolean
   createdAt?: Date | string
@@ -396,9 +414,10 @@ export type PrizeUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   initialStock?: Prisma.IntFieldUpdateOperationsInput | number
-  weight?: Prisma.IntFieldUpdateOperationsInput | number
+  weight?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isLoss?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -412,9 +431,10 @@ export type PrizeUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   initialStock?: Prisma.IntFieldUpdateOperationsInput | number
-  weight?: Prisma.IntFieldUpdateOperationsInput | number
+  weight?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isLoss?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -428,9 +448,10 @@ export type PrizeCreateManyInput = {
   description?: string | null
   imageUrl?: string | null
   color?: string | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
   stock?: number
   initialStock?: number
-  weight?: number
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: boolean
   isLoss?: boolean
   createdAt?: Date | string
@@ -442,9 +463,10 @@ export type PrizeUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   initialStock?: Prisma.IntFieldUpdateOperationsInput | number
-  weight?: Prisma.IntFieldUpdateOperationsInput | number
+  weight?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isLoss?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -457,9 +479,10 @@ export type PrizeUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   initialStock?: Prisma.IntFieldUpdateOperationsInput | number
-  weight?: Prisma.IntFieldUpdateOperationsInput | number
+  weight?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isLoss?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -477,6 +500,7 @@ export type PrizeCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   color?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   stock?: Prisma.SortOrder
   initialStock?: Prisma.SortOrder
   weight?: Prisma.SortOrder
@@ -488,6 +512,7 @@ export type PrizeCountOrderByAggregateInput = {
 
 export type PrizeAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   stock?: Prisma.SortOrder
   initialStock?: Prisma.SortOrder
   weight?: Prisma.SortOrder
@@ -499,6 +524,7 @@ export type PrizeMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   color?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   stock?: Prisma.SortOrder
   initialStock?: Prisma.SortOrder
   weight?: Prisma.SortOrder
@@ -514,6 +540,7 @@ export type PrizeMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   color?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   stock?: Prisma.SortOrder
   initialStock?: Prisma.SortOrder
   weight?: Prisma.SortOrder
@@ -525,6 +552,7 @@ export type PrizeMinOrderByAggregateInput = {
 
 export type PrizeSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   stock?: Prisma.SortOrder
   initialStock?: Prisma.SortOrder
   weight?: Prisma.SortOrder
@@ -546,6 +574,14 @@ export type PrizeUpdateOneWithoutWinningSessionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PrizeUpdateToOneWithWhereWithoutWinningSessionsInput, Prisma.PrizeUpdateWithoutWinningSessionsInput>, Prisma.PrizeUncheckedUpdateWithoutWinningSessionsInput>
 }
 
+export type DecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
 export type IntFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -559,9 +595,10 @@ export type PrizeCreateWithoutWinningSessionsInput = {
   description?: string | null
   imageUrl?: string | null
   color?: string | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
   stock?: number
   initialStock?: number
-  weight?: number
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: boolean
   isLoss?: boolean
   createdAt?: Date | string
@@ -574,9 +611,10 @@ export type PrizeUncheckedCreateWithoutWinningSessionsInput = {
   description?: string | null
   imageUrl?: string | null
   color?: string | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
   stock?: number
   initialStock?: number
-  weight?: number
+  weight?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: boolean
   isLoss?: boolean
   createdAt?: Date | string
@@ -604,9 +642,10 @@ export type PrizeUpdateWithoutWinningSessionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   initialStock?: Prisma.IntFieldUpdateOperationsInput | number
-  weight?: Prisma.IntFieldUpdateOperationsInput | number
+  weight?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isLoss?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -619,9 +658,10 @@ export type PrizeUncheckedUpdateWithoutWinningSessionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   initialStock?: Prisma.IntFieldUpdateOperationsInput | number
-  weight?: Prisma.IntFieldUpdateOperationsInput | number
+  weight?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isLoss?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -665,6 +705,7 @@ export type PrizeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   description?: boolean
   imageUrl?: boolean
   color?: boolean
+  price?: boolean
   stock?: boolean
   initialStock?: boolean
   weight?: boolean
@@ -682,6 +723,7 @@ export type PrizeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   description?: boolean
   imageUrl?: boolean
   color?: boolean
+  price?: boolean
   stock?: boolean
   initialStock?: boolean
   weight?: boolean
@@ -697,6 +739,7 @@ export type PrizeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   description?: boolean
   imageUrl?: boolean
   color?: boolean
+  price?: boolean
   stock?: boolean
   initialStock?: boolean
   weight?: boolean
@@ -712,6 +755,7 @@ export type PrizeSelectScalar = {
   description?: boolean
   imageUrl?: boolean
   color?: boolean
+  price?: boolean
   stock?: boolean
   initialStock?: boolean
   weight?: boolean
@@ -721,7 +765,7 @@ export type PrizeSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PrizeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "imageUrl" | "color" | "stock" | "initialStock" | "weight" | "isActive" | "isLoss" | "createdAt" | "updatedAt", ExtArgs["result"]["prize"]>
+export type PrizeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "imageUrl" | "color" | "price" | "stock" | "initialStock" | "weight" | "isActive" | "isLoss" | "createdAt" | "updatedAt", ExtArgs["result"]["prize"]>
 export type PrizeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   winningSessions?: boolean | Prisma.Prize$winningSessionsArgs<ExtArgs>
   _count?: boolean | Prisma.PrizeCountOutputTypeDefaultArgs<ExtArgs>
@@ -740,9 +784,10 @@ export type $PrizePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     description: string | null
     imageUrl: string | null
     color: string | null
+    price: runtime.Decimal
     stock: number
     initialStock: number
-    weight: number
+    weight: runtime.Decimal
     isActive: boolean
     isLoss: boolean
     createdAt: Date
@@ -1176,9 +1221,10 @@ export interface PrizeFieldRefs {
   readonly description: Prisma.FieldRef<"Prize", 'String'>
   readonly imageUrl: Prisma.FieldRef<"Prize", 'String'>
   readonly color: Prisma.FieldRef<"Prize", 'String'>
+  readonly price: Prisma.FieldRef<"Prize", 'Decimal'>
   readonly stock: Prisma.FieldRef<"Prize", 'Int'>
   readonly initialStock: Prisma.FieldRef<"Prize", 'Int'>
-  readonly weight: Prisma.FieldRef<"Prize", 'Int'>
+  readonly weight: Prisma.FieldRef<"Prize", 'Decimal'>
   readonly isActive: Prisma.FieldRef<"Prize", 'Boolean'>
   readonly isLoss: Prisma.FieldRef<"Prize", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Prize", 'DateTime'>

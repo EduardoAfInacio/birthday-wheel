@@ -116,6 +116,7 @@ export const PrizeScalarFieldEnum = {
   description: 'description',
   imageUrl: 'imageUrl',
   color: 'color',
+  price: 'price',
   stock: 'stock',
   initialStock: 'initialStock',
   weight: 'weight',
