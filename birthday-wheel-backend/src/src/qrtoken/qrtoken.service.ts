@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { QrtokenRepository } from './qrtoken.repository';
-import { QrToken } from '../../generated/prisma/client';
+import { plainToInstance } from 'class-transformer';
+import { QrTokenResponseDto } from './dto/qrtoken.response.dto';
 
 @Injectable()
 export class QrtokenService {
@@ -9,9 +10,13 @@ export class QrtokenService {
   async createQrToken(data: {
     code: string;
     description: string;
-  }): Promise<QrToken> {
+  }): Promise<QrTokenResponseDto> {
     try {
-      return await this.qrtokenRepository.createQrToken(data);
+      const qrToken = await this.qrtokenRepository.createQrToken(data);
+
+      return plainToInstance(QrTokenResponseDto, qrToken, {
+        excludeExtraneousValues: true,
+      });
     } catch (e) {
       console.log(e);
       throw e;
