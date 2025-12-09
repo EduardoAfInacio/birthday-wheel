@@ -12,4 +12,8 @@ export class QrtokenRepository {
   }): Promise<QrToken> {
     return this.prisma.client.qrToken.create({ data });
   }
+
+  async getQrTokenByCode(code: string): Promise<QrToken | null> {
+    return this.prisma.client.qrToken.findUnique({ where: { code } });
+  }
 }
