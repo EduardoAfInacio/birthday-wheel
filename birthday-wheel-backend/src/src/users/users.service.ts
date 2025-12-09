@@ -15,7 +15,7 @@ export class UsersService {
     storeName: string;
   }): Promise<UserResponseDto> {
     try {
-      const user = await this.users.create(data);
+      const user = await this.users.upsertByPhone(data);
       return plainToInstance(UserResponseDto, user, {
         excludeExtraneousValues: true,
       });

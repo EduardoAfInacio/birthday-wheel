@@ -5,6 +5,7 @@ import {
   IsString,
   MinLength,
   Matches,
+  MaxLength,
 } from 'class-validator';
 
 export class ParticipateRequestDto {
@@ -36,6 +37,8 @@ export class ParticipateRequestDto {
   @Matches(/^\d{10,11}$/, {
     message: 'Phone number must contain 10 or 11 numeric digits',
   })
+  @MinLength(10, { message: 'Phone must have at least 10 characters' })
+  @MaxLength(11, { message: 'Phone must have at most 11 characters' })
   phone: string;
 
   @ApiProperty({
