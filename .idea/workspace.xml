@@ -62,7 +62,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "D:/NodeProjects/birthday-wheel/birthday-wheel-backend/src",
+    "last_opened_file_path": "D:/NodeProjects/birthday-wheel/birthday-wheel-backend/src/src/app/dto",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -76,6 +76,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\src\app\dto" />
       <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -110,7 +111,8 @@
       <workItem from="1765310633925" duration="106000" />
       <workItem from="1765336557835" duration="1193000" />
       <workItem from="1765374377832" duration="8628000" />
-      <workItem from="1765384915335" duration="6066000" />
+      <workItem from="1765384915335" duration="6580000" />
+      <workItem from="1765395272070" duration="5329000" />
     </task>
     <servers />
   </component>

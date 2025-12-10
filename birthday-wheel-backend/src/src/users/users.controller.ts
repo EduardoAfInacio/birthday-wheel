@@ -12,7 +12,7 @@ export class UsersController {
   async participationRequest(
     @Body() dto: CreateUserDto,
   ): Promise<UserResponseDto> {
-    const user = await this.usersService.createUser(dto);
+    const user = await this.usersService.upsertUser(dto);
     return plainToInstance(UserResponseDto, user, {
       excludeExtraneousValues: true,
     });

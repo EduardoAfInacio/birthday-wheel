@@ -6,7 +6,7 @@ import { User } from '../../generated/prisma/client';
 export class UsersService {
   constructor(private readonly users: UsersRepository) {}
 
-  async createUser(data: {
+  async upsertUser(data: {
     name: string;
     phone: string;
     email: string;

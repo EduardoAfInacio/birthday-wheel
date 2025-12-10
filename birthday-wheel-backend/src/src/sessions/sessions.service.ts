@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { SessionsRepository } from './sessions.repository';
 import { UsersService } from '../users/users.service';
 import { QrtokenService } from '../qrtoken/qrtoken.service';
-import { UserSpinSession } from '../../generated/prisma/client';
+import { UserSpinSessionGetPayload } from '../../generated/prisma/models/UserSpinSession';
 
 @Injectable()
 export class SessionsService {
@@ -18,7 +18,7 @@ export class SessionsService {
     hasSpun?: boolean;
     spunAt?: string;
     wonPrizeId?: number;
-  }): Promise<UserSpinSession> {
+  }): Promise<UserSpinSessionGetPayload<{ include: { prize: true } }> | null> {
     const user = await this.usersService.findUserById(data.userId);
     const qrtoken = await this.qrTokenService.findQrTokenByCode(
       data.qrTokenCode,
@@ -35,5 +35,14 @@ export class SessionsService {
       spunAt: data.spunAt ? new Date(data.spunAt) : undefined,
       wonPrizeId: data.wonPrizeId,
     });
+  }
+
+  async findSessionByUserAndTokenIds(
+    userId: string,
+    tokenId: string,
+  ): Promise<UserSpinSessionGetPayload<{
+    include: { prize: true };
+  }> | null> {
+    return await this.sessionsRepository.findByUserAndTokenIds(userId, tokenId);
   }
 }

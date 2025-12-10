@@ -1,7 +1,9 @@
 import { PrismaService } from '../prisma/prisma.service';
 import { ConflictException, Injectable } from '@nestjs/common';
-import { UserSpinSession } from '../../generated/prisma/client';
-import { PrismaClientKnownRequestError } from '../../generated/prisma/internal/prismaNamespace';
+import {
+  PrismaClientKnownRequestError,
+  UserSpinSessionGetPayload,
+} from '../../generated/prisma/internal/prismaNamespace';
 
 @Injectable()
 export class SessionsRepository {
@@ -13,7 +15,7 @@ export class SessionsRepository {
     hasSpun?: boolean;
     spunAt?: Date;
     wonPrizeId?: number;
-  }): Promise<UserSpinSession> {
+  }): Promise<UserSpinSessionGetPayload<{ include: { prize: true } }> | null> {
     try {
       return await this.prisma.client.userSpinSession.create({
         data,
@@ -30,5 +32,20 @@ export class SessionsRepository {
       }
       throw error;
     }
+  }
+
+  async findByUserAndTokenIds(
+    userId: string,
+    tokenId: string,
+  ): Promise<UserSpinSessionGetPayload<{ include: { prize: true } }> | null> {
+    return await this.prisma.client.userSpinSession.findUnique({
+      where: {
+        userId_tokenId: {
+          userId,
+          tokenId,
+        },
+      },
+      include: { prize: true },
+    });
   }
 }
