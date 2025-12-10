@@ -30,4 +30,9 @@ export class UsersService {
     if (!user) throw new NotFoundException('User not found');
     return user;
   }
+
+  async findUserById(id: string): Promise<User | null> {
+    const user = await this.users.findById(id);
+    return user;
+  }
 }

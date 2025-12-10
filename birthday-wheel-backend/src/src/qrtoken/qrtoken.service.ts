@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { QrtokenRepository } from './qrtoken.repository';
 import { plainToInstance } from 'class-transformer';
 import { QrTokenResponseDto } from './dto/qrtoken.response.dto';
+import { QrToken } from '../../generated/prisma/client';
 
 @Injectable()
 export class QrtokenService {
@@ -27,5 +28,10 @@ export class QrtokenService {
       console.log(e);
       throw e;
     }
+  }
+
+  async findQrTokenByCode(code: string): Promise<QrToken | null> {
+    const qrToken = await this.qrtokenRepository.getQrTokenByCode(code);
+    return qrToken;
   }
 }

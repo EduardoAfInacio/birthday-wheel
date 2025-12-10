@@ -45,4 +45,8 @@ export class UsersRepository {
       include: { sessions: true },
     });
   }
+
+  async findById(id: string): Promise<User | null> {
+    return this.prisma.client.user.findUnique({ where: { id } });
+  }
 }
