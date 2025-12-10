@@ -19,4 +19,8 @@ export class PrizesService {
       throw e;
     }
   }
+
+  async findByid(id: number): Promise<Prize | null> {
+    return await this.prizesRepository.findById(id);
+  }
 }

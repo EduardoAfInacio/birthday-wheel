@@ -21,4 +21,10 @@ export class PrizesRepository {
   }): Promise<Prize> {
     return this.prisma.client.prize.create({ data });
   }
+
+  async findById(id: number): Promise<Prize | null> {
+    return this.prisma.client.prize.findUnique({
+      where: { id },
+    });
+  }
 }

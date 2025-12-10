@@ -7,7 +7,7 @@ export class UserSpinSessionResponseDto {
     example: 'c1b5e734-03f4-4cc7-9c38-23b129dc4af4',
     description: 'Unique identifier of the user spin session',
   })
-  @Exclude()
+  @Expose()
   id: string;
 
   @ApiProperty({

@@ -4,6 +4,7 @@ import {
   PrismaClientKnownRequestError,
   UserSpinSessionGetPayload,
 } from '../../generated/prisma/internal/prismaNamespace';
+import { UserSpinSession } from '../../generated/prisma/client';
 
 @Injectable()
 export class SessionsRepository {
@@ -46,6 +47,50 @@ export class SessionsRepository {
         },
       },
       include: { prize: true },
+    });
+  }
+
+  async findById(id: string): Promise<UserSpinSession | null> {
+    return this.prisma.client.userSpinSession.findUnique({ where: { id } });
+  }
+
+  async bindPrizeToSession(
+    sessionId: string,
+    prizeId: number,
+  ): Promise<UserSpinSessionGetPayload<{ include: { prize: true } }>> {
+    return this.prisma.client.userSpinSession.update({
+      where: { id: sessionId },
+      data: {
+        prize: {
+          connect: { id: prizeId },
+        },
+        hasSpun: true,
+        spunAt: new Date(),
+      },
+      include: {
+        prize: true,
+        user: true,
+        token: true,
+      },
+    });
+  }
+
+  async unbindPrizeFromSession(
+    sessionId: string,
+    prizeId: number,
+  ): Promise<UserSpinSessionGetPayload<{ include: { prize: true } }>> {
+    return this.prisma.client.userSpinSession.update({
+      where: { id: sessionId },
+      data: {
+        prize: { disconnect: true },
+        hasSpun: false,
+        spunAt: null,
+      },
+      include: {
+        prize: true,
+        user: true,
+        token: true,
+      },
     });
   }
 }

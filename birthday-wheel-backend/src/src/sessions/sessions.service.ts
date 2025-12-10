@@ -3,6 +3,8 @@ import { SessionsRepository } from './sessions.repository';
 import { UsersService } from '../users/users.service';
 import { QrtokenService } from '../qrtoken/qrtoken.service';
 import { UserSpinSessionGetPayload } from '../../generated/prisma/models/UserSpinSession';
+import { PrizesService } from '../prizes/prizes.service';
+import { UserSpinSession } from '../../generated/prisma/client';
 
 @Injectable()
 export class SessionsService {
@@ -10,6 +12,7 @@ export class SessionsService {
     private readonly sessionsRepository: SessionsRepository,
     private readonly usersService: UsersService,
     private readonly qrTokenService: QrtokenService,
+    private readonly prizesService: PrizesService,
   ) {}
 
   async createSession(data: {
@@ -37,6 +40,22 @@ export class SessionsService {
     });
   }
 
+  async createSessionFromParticipateFlow(data: {
+    userId: string;
+    qrTokenId: string;
+    hasSpun?: boolean;
+    spunAt?: string;
+    wonPrizeId?: number;
+  }): Promise<UserSpinSessionGetPayload<{ include: { prize: true } }> | null> {
+    return await this.sessionsRepository.createSession({
+      userId: data.userId,
+      tokenId: data.qrTokenId,
+      hasSpun: data.hasSpun,
+      spunAt: data.spunAt ? new Date(data.spunAt) : undefined,
+      wonPrizeId: data.wonPrizeId,
+    });
+  }
+
   async findSessionByUserAndTokenIds(
     userId: string,
     tokenId: string,
@@ -44,5 +63,36 @@ export class SessionsService {
     include: { prize: true };
   }> | null> {
     return await this.sessionsRepository.findByUserAndTokenIds(userId, tokenId);
+  }
+
+  async assignPrizeToSession(
+    sessionId: string,
+    prizeId: number,
+  ): Promise<UserSpinSessionGetPayload<{ include: { prize: true } }>> {
+    const prize = await this.prizesService.findByid(prizeId);
+
+    if (!prize) {
+      throw new BadRequestException('This prize does not exist.');
+    }
+
+    const session = await this.sessionsRepository.findById(sessionId);
+
+    if (!session) {
+      throw new BadRequestException('This session does not exist.');
+    }
+
+    if (session?.hasSpun) {
+      throw new BadRequestException(
+        'User has already spun, cant bind another prize.',
+      );
+    }
+    return await this.sessionsRepository.bindPrizeToSession(sessionId, prizeId);
+  }
+
+  async unassignPrizeToSession(
+    sessionId: string,
+    prizeId: number,
+  ): Promise<void> {
+    await this.sessionsRepository.unbindPrizeFromSession(sessionId, prizeId);
   }
 }

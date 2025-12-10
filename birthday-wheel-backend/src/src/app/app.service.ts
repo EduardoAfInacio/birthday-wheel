@@ -47,9 +47,9 @@ export class AppService {
       console.log(
         '----------------------------------------------------------------',
       );
-      session = await this.sessionsService.createSession({
+      session = await this.sessionsService.createSessionFromParticipateFlow({
         userId: user.id,
-        qrTokenCode: qrToken.code,
+        qrTokenId: qrToken.id,
       });
     }
 
