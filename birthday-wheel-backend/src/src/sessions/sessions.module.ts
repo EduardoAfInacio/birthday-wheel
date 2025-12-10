@@ -2,9 +2,20 @@ import { Module } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
 import { SessionsController } from './sessions.controller';
 import { SessionsRepository } from './sessions.repository';
+import { UsersService } from '../users/users.service';
+import { QrtokenService } from '../qrtoken/qrtoken.service';
+import { UsersRepository } from '../users/users.repository';
+import { QrtokenRepository } from '../qrtoken/qrtoken.repository';
 
 @Module({
   controllers: [SessionsController],
-  providers: [SessionsService, SessionsRepository],
+  providers: [
+    SessionsService,
+    SessionsRepository,
+    UsersService,
+    UsersRepository,
+    QrtokenService,
+    QrtokenRepository,
+  ],
 })
 export class SessionsModule {}

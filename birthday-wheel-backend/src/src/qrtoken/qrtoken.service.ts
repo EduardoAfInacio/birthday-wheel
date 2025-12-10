@@ -26,7 +26,6 @@ export class QrtokenService {
 
   async findQrTokenByCode(code: string): Promise<QrToken | null> {
     const qrToken = await this.qrtokenRepository.getQrTokenByCode(code);
-    if (!qrToken) throw new BadRequestException('QR code not found');
     return qrToken;
   }
 }
