@@ -56,6 +56,13 @@ export class ParticipateResponseDto {
   @Expose()
   userPhone: string;
 
+  @ApiProperty({
+    example: false,
+    description: 'Indicates whether the user has already spun the wheel',
+  })
+  @Expose()
+  hasSpun: boolean;
+
   /* ----------------------------- PRIZE OBJECT ----------------------------- */
 
   @ApiProperty({
