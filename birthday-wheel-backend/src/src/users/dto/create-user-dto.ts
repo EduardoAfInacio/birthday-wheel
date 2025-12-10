@@ -8,7 +8,7 @@ import {
   MaxLength,
 } from 'class-validator';
 
-export class ParticipateRequestDto {
+export class CreateUserDto {
   @ApiProperty({
     description: "User's full name",
     example: 'John Smith',

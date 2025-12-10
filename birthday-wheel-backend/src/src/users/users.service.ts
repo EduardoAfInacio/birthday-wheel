@@ -1,8 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
 import { User } from '../../generated/prisma/client';
-import { UserResponseDto } from './dto/UserResponseDto';
-import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class UsersService {
@@ -13,12 +11,9 @@ export class UsersService {
     phone: string;
     email: string;
     storeName: string;
-  }): Promise<UserResponseDto> {
+  }): Promise<User> {
     try {
-      const user = await this.users.upsertByPhone(data);
-      return plainToInstance(UserResponseDto, user, {
-        excludeExtraneousValues: true,
-      });
+      return await this.users.upsertByPhone(data);
     } catch (e) {
       console.log(e);
       throw e;

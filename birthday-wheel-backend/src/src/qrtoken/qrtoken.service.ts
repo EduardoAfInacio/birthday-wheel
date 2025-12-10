@@ -1,7 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { QrtokenRepository } from './qrtoken.repository';
-import { plainToInstance } from 'class-transformer';
-import { QrTokenResponseDto } from './dto/qrtoken.response.dto';
 import { QrToken } from '../../generated/prisma/client';
 
 @Injectable()
@@ -11,7 +9,7 @@ export class QrtokenService {
   async createQrToken(data: {
     code: string;
     description: string;
-  }): Promise<QrTokenResponseDto> {
+  }): Promise<QrToken> {
     try {
       const qrTokenAlreadyExists =
         await this.qrtokenRepository.getQrTokenByCode(data.code);
@@ -19,11 +17,7 @@ export class QrtokenService {
       if (qrTokenAlreadyExists)
         throw new BadRequestException('QR code token already exists');
 
-      const qrToken = await this.qrtokenRepository.createQrToken(data);
-
-      return plainToInstance(QrTokenResponseDto, qrToken, {
-        excludeExtraneousValues: true,
-      });
+      return await this.qrtokenRepository.createQrToken(data);
     } catch (e) {
       console.log(e);
       throw e;
@@ -32,6 +26,7 @@ export class QrtokenService {
 
   async findQrTokenByCode(code: string): Promise<QrToken | null> {
     const qrToken = await this.qrtokenRepository.getQrTokenByCode(code);
+    if (!qrToken) throw new BadRequestException('QR code not found');
     return qrToken;
   }
 }

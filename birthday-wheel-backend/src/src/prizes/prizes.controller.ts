@@ -1,11 +1,8 @@
-import {
-  Controller,
-  Post,
-  Body,
-} from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { PrizesService } from './prizes.service';
 import { CreatePrizeDto } from './dto/create-prize.dto';
 import { PrizeResponseDto } from './dto/prize.response.dto';
+import { plainToInstance } from 'class-transformer';
 
 @Controller('prizes')
 export class PrizesController {
@@ -13,6 +10,17 @@ export class PrizesController {
 
   @Post('/create')
   async create(@Body() dto: CreatePrizeDto): Promise<PrizeResponseDto> {
-    return await this.prizesService.create(dto);
+    const prize = await this.prizesService.create(dto);
+    return plainToInstance(
+      PrizeResponseDto,
+      {
+        ...dto,
+        price: prize.price.toString(),
+        weight: prize.weight.toString(),
+      },
+      {
+        excludeExtraneousValues: true,
+      },
+    );
   }
 }

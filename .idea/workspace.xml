@@ -19,6 +19,13 @@
       </list>
     </option>
   </component>
+  <component name="FormatOnSaveOptions">
+    <option name="myRunOnSave" value="false" />
+    <option name="myAllFileTypesSelected" value="true" />
+    <option name="mySelectedFileTypes">
+      <set />
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -46,30 +53,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/NodeProjects/birthday-wheel&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;D:\\NodeProjects\\birthday-wheel\\birthday-wheel-backend\\node_modules\\prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;D:\\NodeProjects\\birthday-wheel\\birthday-wheel-backend\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Node.js.qrtoken.request.dto.ts.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/NodeProjects/birthday-wheel/birthday-wheel-backend/src",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "D:\\NodeProjects\\birthday-wheel\\birthday-wheel-backend\\node_modules\\prettier",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "ts.external.directory.path": "D:\\NodeProjects\\birthday-wheel\\birthday-wheel-backend\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\src\prizes" />
+      <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src" />
       <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\src" />
-      <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\src\users" />
+      <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\app" />
+      <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\dto" />
+      <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\src\prizes" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -92,7 +106,11 @@
       <workItem from="1764997752979" duration="70000" />
       <workItem from="1764997834040" duration="72000" />
       <workItem from="1764997987074" duration="6264000" />
-      <workItem from="1765291509921" duration="13733000" />
+      <workItem from="1765291509921" duration="14759000" />
+      <workItem from="1765310633925" duration="106000" />
+      <workItem from="1765336557835" duration="1193000" />
+      <workItem from="1765374377832" duration="8628000" />
+      <workItem from="1765384915335" duration="5042000" />
     </task>
     <servers />
   </component>
