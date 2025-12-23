@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react"
-import * as confetti from "canvas-confetti"
+import confetti from "canvas-confetti"
 import { motion, useAnimation } from "framer-motion"
 import { Button } from "./ui/button";
 
@@ -20,33 +20,38 @@ export function WheelPage() {
     const [prize, setPrize] = useState<string | null>(null);
 
     const spin = async () => {
-        if (spinning) return;
-        setSpinning(true);
-        setPrize(null);
+            if (spinning) return;
+            setSpinning(true);
+            setPrize(null);
 
-        const winningIndex = 3;
-        const segmentAngle = 360 / prizes.length;
-        const currentRotation = 0 
-        const spinRotation = 1800 + (360 - (winningIndex * segmentAngle))
+            const winningIndex = 3; // Índice do prêmio (50% OFF)
+            const segmentAngle = 360 / prizes.length;
+            
+            const halfSegment = segmentAngle / 2;
+            
+            const randomOffset = (Math.random() - 0.5) * (segmentAngle * 0.4); 
 
-        await controls.start({
-            rotate: spinRotation,
-            transition: { duration: 4, type: "spring", damping: 10, stiffness: 50 },
-        })
+            const spinRotation = 4320 + (360 - (winningIndex * segmentAngle) - halfSegment) + randomOffset;
 
-        setSpinning(false);
-        setPrize(prizes[winningIndex].label);
+            await controls.start({
+                rotate: spinRotation,
+                transition: { duration: 10, ease: "circOut", type: "tween" },
+            })
 
-        confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 }  
-        })
+            setSpinning(false);
+            setPrize(prizes[winningIndex].label);
+
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }  
+            })
     }
+    
     return (
         <div className="flex flex-col items-center gap-8">
         <div className="relative w-80 h-80 rounded-full border-4 border-white shadow-2xl overflow-hidden">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 z-10 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[30px] border-t-yellow-400" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 z-10 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[30px] border-t-yellow-500" />
 
             <motion.div
             className="w-full h-full"
@@ -60,8 +65,9 @@ export function WheelPage() {
                         `${p.color} ${(i * 100)/prizes.length}% ${((i+1) * 100)/prizes.length}%`
                     ).join(', ')}
                     )`
-                }} 
-            />
+                }}
+            >
+            </div>
             </motion.div>
             <button 
             onClick={spin}
