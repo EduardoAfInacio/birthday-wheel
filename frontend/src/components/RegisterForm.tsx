@@ -37,10 +37,11 @@ function phoneMask(value: string) {
 }
 
 const STORES = [
-  { label: "Loja Centro", value: "centro" },
-  { label: "Loja Shopping Norte", value: "shopping_norte" },
-  { label: "Loja Shopping Sul", value: "shopping_sul" },
-  { label: "Loja Bairro", value: "bairro" },
+  { label: "Center", value: "center" },
+  { label: "North", value: "north" },
+  { label: "South", value: "south" },
+  { label: "East", value: "east" },
+  { label: "West", value: "west" },
 ]
 
 export default function RegisterForm() {
@@ -66,8 +67,8 @@ export default function RegisterForm() {
     return (
         <Card className="w-[400px] shadow-xl bg-white/95 backdrop-blur">
             <CardHeader>
-                <CardTitle className="text-center text-xl text-gray-800">Cadastre-se</CardTitle>
-                <p className="text-center text-sm text-gray-500">Preencha com seus dados para concorrer!</p>
+                <CardTitle className="text-center text-xl text-gray-800">Register</CardTitle>
+                <p className="text-center text-sm text-gray-500">Fill in your details to compete!</p>
             </CardHeader>
             <CardContent>
                 <Form {...form}>
