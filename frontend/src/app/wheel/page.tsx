@@ -1,6 +1,6 @@
 import { WheelPage } from '@/src/components/WheelPage';
 
-export default function Page() {
+export default function Wheel() {
     return (
         <WheelPage />
     )
