@@ -4,6 +4,7 @@ import { useState } from "react"
 import confetti from "canvas-confetti"
 import { motion, useAnimation } from "framer-motion"
 import { ShoppingBag, Star, Truck, RefreshCcw, Percent, Gift } from "lucide-react";
+import { useUserStore } from "../lib/store";
 
 const prizes = [ 
     { label: "10% OFF", color: "#FF6B6B", icon: Percent },       // Index 0
@@ -16,6 +17,7 @@ const prizes = [
 
 export function WheelPage() {
     const controls = useAnimation();
+    const user = useUserStore((state) => state.user);
     const [spinning, setSpinning] = useState(false);
     const [prize, setPrize] = useState<string | null>(null);
 
@@ -153,7 +155,7 @@ export function WheelPage() {
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-white p-6 rounded-xl shadow-2xl text-center border border-gray-100 w-full max-w-sm"
                 >
-                    <h2 className="text-2xl font-bold text-gray-800">Congratulations!</h2>
+                    <h2 className="text-2xl font-bold text-gray-800">Congratulations, {user?.name}!</h2>
                     <p className="text-gray-500 text-sm mt-1">You won:</p>
                     <div className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 my-4">
                         {prize}

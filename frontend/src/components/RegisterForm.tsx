@@ -46,7 +46,7 @@ const STORES = [
 
 export default function RegisterForm() {
     const router = useRouter();
-    const setName = useUserStore((state) => state.setName);
+    const setUser = useUserStore((state) => state.setUser);
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
@@ -59,8 +59,7 @@ export default function RegisterForm() {
     })
 
     function onSubmit(values: FormData) {
-        console.log(values);
-        setName(values.name);
+        setUser(values);
         router.push("/wheel");
     }
 
