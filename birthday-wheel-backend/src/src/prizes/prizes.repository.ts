@@ -22,6 +22,35 @@ export class PrizesRepository {
     return this.prisma.client.prize.create({ data });
   }
 
+  async findActivePrizes(): Promise<Prize[]> {
+    return this.prisma.client.prize.findMany({
+      where: {
+        isActive: true,
+        stock: {
+          gt: 0,
+        },
+      },
+    });
+  }
+
+  async decrementStock(id: number): Promise<Prize> {
+    return this.prisma.client.prize.update({
+      where: { id },
+      data: {
+        stock: {
+          decrement: 1,
+        },
+      },
+    });
+  }
+
+  async findAllForWheelDisplay(): Promise<Prize[]> {
+    return this.prisma.client.prize.findMany({
+      where: { isActive: true },
+      orderBy: { id: 'asc' },
+    });
+  }
+
   async findById(id: number): Promise<Prize | null> {
     return this.prisma.client.prize.findUnique({
       where: { id },
