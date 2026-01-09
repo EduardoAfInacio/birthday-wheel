@@ -55,6 +55,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;JavaScript Debug.localhost:51212.executor&quot;: &quot;Debug&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;Node.js.qrtoken.request.dto.ts.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -86,6 +87,16 @@
       <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\app" />
       <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\dto" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="localhost:51212" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:51212">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JavaScript Debug.localhost:51212" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -129,7 +140,9 @@
       <workItem from="1767813305319" duration="598000" />
       <workItem from="1767879653081" duration="9475000" />
       <workItem from="1767913896991" duration="603000" />
-      <workItem from="1767975774102" duration="11513000" />
+      <workItem from="1767975774102" duration="13805000" />
+      <workItem from="1767994735550" duration="90000" />
+      <workItem from="1767999496321" duration="1489000" />
     </task>
     <servers />
   </component>
