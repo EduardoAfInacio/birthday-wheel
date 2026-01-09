@@ -3,37 +3,42 @@
 import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
 import { motion, useAnimation } from "framer-motion";
-import { Star, Gift } from "lucide-react"; 
+import { Loader2 } from "lucide-react"; 
 import { useAppStore } from "../lib/store";
 import { api } from "../services/api";
 import { useRouter } from "next/navigation";
 import { SpinResponse, Prize } from "@/src/types/api";
 
-// Idealmente, faça um fetch em um useEffect para popular isso antes de girar
-const DEFAULT_PRIZES = [
-    { id: '1', name: '?', color: '#FF6B6B' },
-    { id: '2', name: '?', color: '#4ECDC4' },
-    { id: '3', name: '?', color: '#FFE66D' },
-    { id: '4', name: '?', color: '#1A535C' },
-    { id: '5', name: '?', color: '#FF9F1C' },
-    { id: '6', name: '?', color: '#F7FFF7' },
-];
-
 export function WheelPage() {
     const controls = useAnimation();
     const router = useRouter();
-    
     const { session, qrTokenCode } = useAppStore();
     
     const [isSpinning, setIsSpinning] = useState(false);
     const [wonPrize, setWonPrize] = useState<Prize | null>(null);
-    const [displayPrizes, setDisplayPrizes] = useState<any[]>(DEFAULT_PRIZES);
+    
+    const [displayPrizes, setDisplayPrizes] = useState<Prize[]>([]);
+    const [loadingPrizes, setLoadingPrizes] = useState(true);
 
     useEffect(() => {
         if (!session || !qrTokenCode) {
             router.push("/");
         }
     }, [session, qrTokenCode, router]);
+
+    useEffect(() => {
+        async function fetchInitialPrizes() {
+            try {
+                const prizes = await api.getPrizes();
+                setDisplayPrizes(prizes);
+            } catch (error) {
+                console.error("Error loading prizes:", error);
+            } finally {
+                setLoadingPrizes(false);
+            }
+        }
+        fetchInitialPrizes();
+    }, []);
 
     const handleSpin = async () => {
         if (isSpinning || !session || !qrTokenCode) return;
@@ -43,7 +48,7 @@ export function WheelPage() {
 
         try {
             const data: SpinResponse = await api.spin({
-                userId: session.userId,
+                userId: session.userId, 
                 qrTokenCode: qrTokenCode
             });
 
@@ -52,22 +57,21 @@ export function WheelPage() {
             }
 
             const winningIndex = data.prizeIndex;
-            const totalSegments = data.allPrizes.length || displayPrizes.length;
+
+            const totalSegments = data.allPrizes.length; 
             const segmentAngle = 360 / totalSegments;
 
             const randomOffset = (Math.random() - 0.5) * (segmentAngle * 0.4); 
             
-            // Rotation 
             const prizeRotation = 360 - (winningIndex * segmentAngle);
+        
             const totalRotation = 1800 + prizeRotation + randomOffset;
 
-            // Animation
             await controls.start({
                 rotate: totalRotation,
                 transition: { duration: 5, ease: "circOut" },
             });
 
-            // End
             setWonPrize(data.wonPrize);
             
             confetti({
@@ -76,9 +80,12 @@ export function WheelPage() {
                 origin: { y: 0.6 }
             });
 
-        } catch (error) {
-            console.error("Spin failed:", error);
-            alert("Something went wrong. Please try again.");
+        } catch (error: any) {
+            if(error.message.includes("stock is empty")) {
+                alert("Sorry, all prizes have been claimed.")
+            }else{
+                alert("An error occurred while spinning the wheel. Please try again.");
+            }
             controls.set({ rotate: 0 });
         } finally {
             setIsSpinning(false);
@@ -86,6 +93,8 @@ export function WheelPage() {
     };
 
     const createSlicePath = (index: number, total: number, radius: number) => {
+        if (total <= 0) return "";
+        
         const angle = 360 / total;
         const startAngle = (index * angle) * (Math.PI / 180);
         const endAngle = ((index + 1) * angle) * (Math.PI / 180);
@@ -94,6 +103,14 @@ export function WheelPage() {
         const x2 = 50 + radius * Math.cos(endAngle);
         const y2 = 50 + radius * Math.sin(endAngle);
         return `M 50 50 L ${x1} ${y1} A ${radius} ${radius} 0 0 1 ${x2} ${y2} Z`;
+    }
+
+    if (loadingPrizes) {
+        return (
+            <div className="flex h-screen w-full items-center justify-center text-white">
+                <Loader2 className="h-10 w-10 animate-spin" />
+            </div>
+        )
     }
 
     return (
@@ -130,18 +147,18 @@ export function WheelPage() {
                                         stroke="white" 
                                         strokeWidth="0.5" 
                                     />
-                                    {/* Prize icon*/}
+                                    {/* Prize Text */}
                                     <g transform={`translate(${textX}, ${textY}) rotate(${midAngle + 90})`}>
                                         <text 
                                             x="0" y="0" 
-                                            fill="white"
+                                            fill="white" 
                                             textAnchor="middle" 
                                             dominantBaseline="middle"
                                             fontSize="4" 
                                             fontWeight="800"
                                             className="uppercase"
                                         >
-                                            {p.name.substring(0, 10)}
+                                            {p.name?.substring(0, 10)}
                                         </text>
                                     </g>
                                 </g>
