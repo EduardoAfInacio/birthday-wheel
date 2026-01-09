@@ -42,7 +42,11 @@ export class PrizesService {
   }
 
   async getDisplayPrizes(): Promise<Prize[]> {
-    return await this.prizesRepository.findAllForWheelDisplay();
+    const availablePrizes = await this.prizesRepository.findActivePrizes();
+    if (availablePrizes.length === 0) {
+      throw new BadRequestException('Sorry, prize stock is empty!');
+    }
+    return availablePrizes;
   }
 
   async create(dto: CreatePrizeDto): Promise<Prize> {

@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { PrizesService } from './prizes.service';
 import { CreatePrizeDto } from './dto/create-prize.dto';
 import { PrizeResponseDto } from './dto/prize.response.dto';
@@ -22,5 +22,14 @@ export class PrizesController {
         excludeExtraneousValues: true,
       },
     );
+  }
+
+  @Get('/getAvailablePrizes')
+  async getAvailablePrizes(): Promise<PrizeResponseDto[]> {
+    const prizes = await this.prizesService.getDisplayPrizes();
+
+    return plainToInstance(PrizeResponseDto, prizes, {
+      excludeExtraneousValues: true,
+    });
   }
 }
