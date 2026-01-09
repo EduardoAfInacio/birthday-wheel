@@ -1,28 +1,24 @@
 import { create } from "zustand";
+import { ParticipateResponse, Prize } from "../types/api";
 
-export interface UserData {
-    name: string;
-    email: string;
-    phone: string;
-    store: string;
+interface AppState {
+    session: ParticipateResponse | null;
+    setSession: (data: ParticipateResponse) => void;
+
+    qrTokenCode: string | null;
+    setQrTokenCode: (code: string) => void;
+
+    prizes: Prize[];
+    setPrizes: (prizes: Prize[]) => void;
 }
 
-interface UserStore {
-    user: UserData | null;
-    setUser: (data: UserData) => void;
+export const useAppStore = create<AppState>((set) => ({
+    session: null,
+    setSession: (data: ParticipateResponse) => set({ session: data }),
 
-    resetUser: () => void;
-}
+    qrTokenCode: null,
+    setQrTokenCode: (code: string) => set({ qrTokenCode: code}),
 
-const initialState: UserData = {
-    name: "",
-    email: "",
-    phone: "",
-    store: "",
-}
-
-export const useUserStore = create<UserStore>((set) => ({
-    user: initialState,
-    setUser: (data: UserData) => set( { user: data} ),
-    resetUser: () => set( { user: initialState})
+    prizes: [],
+    setPrizes: (prizes: Prize[]) => set({ prizes }),
 }))
