@@ -2,8 +2,8 @@
 
 import * as z from "zod";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { useRouter } from "next/navigation";
-import { useUserStore } from "../lib/store";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useAppStore } from "../lib/store";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "./ui/form";
@@ -16,6 +16,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { useEffect, useState } from "react";
+import { api } from "../services/api";
 
 const formSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters long"),
@@ -46,7 +48,20 @@ const STORES = [
 
 export default function RegisterForm() {
     const router = useRouter();
-    const setUser = useUserStore((state) => state.setUser);
+    const searchParams = useSearchParams();
+    const { setSession, setQrTokenCode } = useAppStore();
+
+    const [ isLoading, setIsLoading ] = useState(false);
+    const [ error, setError ] = useState<string | null>(null);
+
+    useEffect(() => {
+        const code = searchParams.get("code");
+        if(code) {
+            setQrTokenCode(code);
+        }else{
+            setError("QR token code is missing in the URL.");
+        }
+    }, [searchParams, setQrTokenCode])
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
@@ -58,9 +73,34 @@ export default function RegisterForm() {
         },
     })
 
-    function onSubmit(values: FormData) {
-        setUser(values);
-        router.push("/wheel");
+    async function onSubmit(values: FormData) {
+        setIsLoading(true);
+        setError(null);
+        const code = searchParams.get("code");
+
+        if(!code) {
+            setError("QR token code is missing in the URL.");
+            setIsLoading(false);
+            return;
+        }
+        
+        try {
+            const response = await api.participate({
+                ...values,
+                qrTokenCode: code,
+            });
+
+            setSession(response);
+            if(response.hasSpun) {
+                router.push("/wheel");
+            } else {
+                router.push("/wheel");
+            }
+        }catch (err: any) {
+            setError(err.message || "An error occurred during registration.");
+        }finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -141,6 +181,7 @@ export default function RegisterForm() {
                             )}/>
 
                         <Button type="submit"
+                                disabled={isLoading || !!error}
                                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600">
                                     Submit
                         </Button>
