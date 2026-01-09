@@ -3,7 +3,9 @@ import { QrtokenService } from '../qrtoken/qrtoken.service';
 import { UsersService } from '../users/users.service';
 import { SessionsService } from '../sessions/sessions.service';
 import { plainToInstance } from 'class-transformer';
-import { ParticipateResponseDto } from './dto/participate-response-dto';
+import { ParticipateResponseDto } from './dto/participate.response.dto';
+import { PrizesService } from '../prizes/prizes.service';
+import { SpinResponseDto } from './dto/spin.response.dto';
 
 @Injectable()
 export class AppService {
@@ -11,6 +13,7 @@ export class AppService {
     private readonly qrTokenService: QrtokenService,
     private readonly usersService: UsersService,
     private readonly sessionsService: SessionsService,
+    private readonly prizesService: PrizesService,
   ) {}
   async startFlow(data: {
     name: string;
@@ -64,6 +67,49 @@ export class AppService {
       {
         excludeExtraneousValues: true,
       },
+    );
+  }
+
+  async executeSpin(data: {
+    userId: string;
+    qrTokenCode: string;
+  }): Promise<SpinResponseDto> {
+    const qrToken = await this.qrTokenService.findQrTokenByCode(
+      data.qrTokenCode,
+    );
+    if (!qrToken || !qrToken.isActive)
+      throw new BadRequestException('Invalid QR Token!');
+
+    const session = await this.sessionsService.findSessionByUserAndTokenIds(
+      data.userId,
+      qrToken.id,
+    );
+
+    if (!session) throw new BadRequestException('Session not found!');
+    if (session.hasSpun)
+      throw new BadRequestException('You have already spun!');
+
+    const allPrizes = await this.prizesService.getDisplayPrizes();
+
+    const wonPrize = await this.prizesService.drawPrize();
+
+    const prizeIndex = allPrizes.findIndex((p) => p.id === wonPrize.id);
+
+    await this.sessionsService.updateSessionAfterSpin(session.id, {
+      hasSpun: true,
+      wonPrizeId: wonPrize.id,
+      spunAt: new Date(),
+    });
+
+    return plainToInstance(
+      SpinResponseDto,
+      {
+        success: true,
+        prizeIndex: prizeIndex,
+        wonPrize: wonPrize,
+        allPrizes: allPrizes,
+      },
+      { excludeExtraneousValues: true },
     );
   }
 }

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Transform } from 'class-transformer';
 
 export class PrizeResponseDto {
   @ApiProperty({
@@ -7,6 +7,7 @@ export class PrizeResponseDto {
     description: 'Unique identifier of the prize',
   })
   @Expose()
+  @Transform(({ value }) => String(value))
   id: string;
 
   @ApiProperty({
@@ -45,6 +46,7 @@ export class PrizeResponseDto {
     description: 'Prize price formatted as a decimal string (up to 2 decimals)',
   })
   @Expose()
+  @Transform(({ value }) => value?.toString())
   price: string;
 
   @ApiProperty({
@@ -66,6 +68,7 @@ export class PrizeResponseDto {
     description: 'Prize weight used for draw probability calculations',
   })
   @Exclude()
+  @Transform(({ value }) => value?.toString())
   weight: string;
 
   @ApiProperty({

@@ -65,6 +65,13 @@ export class SessionsService {
     return await this.sessionsRepository.findByUserAndTokenIds(userId, tokenId);
   }
 
+  async updateSessionAfterSpin(
+    sessionId: string,
+    data: { hasSpun: boolean; wonPrizeId: number; spunAt: Date },
+  ) {
+    await this.sessionsRepository.updateSession(sessionId, data);
+  }
+
   async assignPrizeToSession(
     sessionId: string,
     prizeId: number,

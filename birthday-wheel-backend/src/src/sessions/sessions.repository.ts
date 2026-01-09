@@ -54,6 +54,22 @@ export class SessionsRepository {
     return this.prisma.client.userSpinSession.findUnique({ where: { id } });
   }
 
+  async updateSession(
+    sessionId: string,
+    data: { hasSpun: boolean; wonPrizeId: number; spunAt: Date },
+  ) {
+    return this.prisma.client.userSpinSession.update({
+      where: { id: sessionId },
+      data: {
+        hasSpun: data.hasSpun,
+        spunAt: data.spunAt,
+        prize: {
+          connect: { id: data.wonPrizeId },
+        },
+      },
+    });
+  }
+
   async bindPrizeToSession(
     sessionId: string,
     prizeId: number,

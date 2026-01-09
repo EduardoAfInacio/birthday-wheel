@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { PrizeResponseDto } from './prize.dto';
+import { PrizeResponseDto } from './prize.response.dto';
 
 export class ParticipateResponseDto {
   /* ---------------------------- SESSION FIELDS ---------------------------- */
