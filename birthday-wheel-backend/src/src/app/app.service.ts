@@ -60,6 +60,7 @@ export class AppService {
       ParticipateResponseDto,
       {
         ...session,
+        userId: user.id,
         userName: user.name,
         userEmail: user.email,
         userPhone: user.phone,

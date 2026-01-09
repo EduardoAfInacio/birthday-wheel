@@ -10,7 +10,7 @@ export class ParticipateResponseDto {
     description: 'Unique identifier of the spin session',
   })
   @Expose()
-  id: string;
+  sessionId: string;
 
   @ApiProperty({
     example: 'abc123qr0987token',
@@ -34,6 +34,12 @@ export class ParticipateResponseDto {
   updatedAt: Date;
 
   /* ----------------------------- USER FIELDS ----------------------------- */
+  @ApiProperty({
+    example: 'John Smith',
+    description: "User's full name",
+  })
+  @Expose()
+  userId: string;
 
   @ApiProperty({
     example: 'John Smith',

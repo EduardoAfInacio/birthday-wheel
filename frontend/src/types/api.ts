@@ -18,6 +18,7 @@ export interface ParticipateRequest {
 export interface ParticipateResponse {
   id: string; 
   qrTokenCode: string;
+  userId: string;
   userName: string;
   hasSpun: boolean;
   prize: Prize | null;
