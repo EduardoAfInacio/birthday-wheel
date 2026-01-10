@@ -52,7 +52,10 @@ export function WheelPage() {
                     if (winningIndex !== -1) {
                         const totalSegments = prizes.length;
                         const segmentAngle = 360 / totalSegments;
-                        const prizeRotation = 360 - (winningIndex * segmentAngle);
+
+                        const centerOffset = segmentAngle / 2;
+                        const prizeRotation = 360 - ((winningIndex * segmentAngle) + centerOffset);
+                        
                         controls.set({ rotate: prizeRotation });
                     }
                 }
@@ -85,9 +88,13 @@ export function WheelPage() {
             const winningIndex = data.prizeIndex;
             const totalSegments = data.allPrizes.length; 
             const segmentAngle = 360 / totalSegments;
-            const randomOffset = (Math.random() - 0.5) * (segmentAngle * 0.4); 
-            
-            const prizeRotation = 360 - (winningIndex * segmentAngle);
+
+            const centerOffset = segmentAngle / 2;
+
+            const randomOffset = (Math.random() - 0.5) * (segmentAngle * 0.8); 
+
+            const prizeRotation = 360 - ((winningIndex * segmentAngle) + centerOffset);
+
             const totalRotation = 1800 + prizeRotation + randomOffset;
 
             await controls.start({
@@ -96,7 +103,6 @@ export function WheelPage() {
             });
 
             setWonPrize(data.wonPrize);
-
             setSpinResult(data.wonPrize);
             
             confetti({
