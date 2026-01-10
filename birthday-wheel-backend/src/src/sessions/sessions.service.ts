@@ -4,7 +4,6 @@ import { UsersService } from '../users/users.service';
 import { QrtokenService } from '../qrtoken/qrtoken.service';
 import { UserSpinSessionGetPayload } from '../../generated/prisma/models/UserSpinSession';
 import { PrizesService } from '../prizes/prizes.service';
-import { UserSpinSession } from '../../generated/prisma/client';
 
 @Injectable()
 export class SessionsService {

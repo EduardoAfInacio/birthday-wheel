@@ -2,10 +2,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { QrtokenService } from '../qrtoken/qrtoken.service';
 import { UsersService } from '../users/users.service';
 import { SessionsService } from '../sessions/sessions.service';
-import { plainToInstance } from 'class-transformer';
-import { ParticipateResponseDto } from './dto/participate.response.dto';
 import { PrizesService } from '../prizes/prizes.service';
-import { SpinResponseDto } from './dto/spin.response.dto';
+
 
 @Injectable()
 export class AppService {
