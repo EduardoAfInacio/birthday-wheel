@@ -76,7 +76,7 @@ export const api = {
         return response.json();
     },
 
-    async getWinners(token: string, page = 1, limit = 50): Promise<WinnersResponse> {
+    async getWinners(token: string, page = 1, limit = 2): Promise<WinnersResponse> {
         const response = await fetch(`${BASE_URL}/sessions/winners?page=${page}&limit=${limit}`, {
             method: 'GET',
             headers: {
