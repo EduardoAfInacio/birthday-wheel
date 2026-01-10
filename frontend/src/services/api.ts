@@ -6,7 +6,7 @@ import {
   WinnersResponse  
 } from "../types/api";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://localhost:3000/';
+const BASE_URL = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://localhost:3000';
 
 
 export const api = {
@@ -45,7 +45,7 @@ export const api = {
     },
 
     async getPrizes() {
-        const response = await fetch(`${BASE_URL}prizes/getAvailablePrizes`, {
+        const response = await fetch(`${BASE_URL}/prizes/getAvailablePrizes`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

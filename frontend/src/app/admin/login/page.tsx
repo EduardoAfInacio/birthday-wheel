@@ -51,8 +51,8 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 p-4">
-      <Card className="w-full max-w-md shadow-2xl bg-white/95 backdrop-blur border-none">
+    <div className="flex h-screen w-full items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 overflow-hidden">
+      <Card className="w-full max-w-md shadow-2xl bg-white/95 backdrop-blur border-none m-4">
         <CardHeader className="space-y-1 text-center">
           <div className="mx-auto bg-purple-100 p-3 rounded-full w-fit mb-2">
             <Lock className="h-6 w-6 text-purple-600" />
