@@ -49,8 +49,9 @@ const STORES = [
 export default function RegisterForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const { setSession, setQrTokenCode } = useAppStore();
-
+    const { session, setSession, setQrTokenCode, qrTokenCode } = useAppStore();
+    const [isStoreLoaded, setIsStoreLoaded] = useState(false)
+    
     const [ isLoading, setIsLoading ] = useState(false);
     const [ error, setError ] = useState<string | null>(null);
 
@@ -62,6 +63,13 @@ export default function RegisterForm() {
             setError("QR token code is missing in the URL.");
         }
     }, [searchParams, setQrTokenCode])
+
+    useEffect(() => {
+        if(isStoreLoaded && session){
+            console.log("Existing session found, redirecting to wheel page.");
+            router.push("/wheel");
+        }
+    }, [isStoreLoaded, session, router])
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),

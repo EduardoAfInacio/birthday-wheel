@@ -6,7 +6,6 @@ import { plainToInstance } from 'class-transformer';
 import { ParticipateResponseDto } from './dto/participate.response.dto';
 import { PrizesService } from '../prizes/prizes.service';
 import { SpinResponseDto } from './dto/spin.response.dto';
-import { Prize } from '../../generated/prisma/client';
 
 @Injectable()
 export class AppService {

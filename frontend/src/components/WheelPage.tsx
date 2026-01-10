@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
 import { motion, useAnimation } from "framer-motion";
-import { Loader2 } from "lucide-react"; 
+import { Loader2, LogOut } from "lucide-react"; 
 import { useAppStore } from "../lib/store";
 import { api } from "../services/api";
 import { useRouter } from "next/navigation";
@@ -12,21 +12,32 @@ import { SpinResponse, Prize } from "@/src/types/api";
 export function WheelPage() {
     const controls = useAnimation();
     const router = useRouter();
-    const { session, qrTokenCode } = useAppStore();
+    const { session, qrTokenCode, reset } = useAppStore();
     
     const [isSpinning, setIsSpinning] = useState(false);
     const [wonPrize, setWonPrize] = useState<Prize | null>(null);
-    
     const [displayPrizes, setDisplayPrizes] = useState<Prize[]>([]);
-    const [loadingPrizes, setLoadingPrizes] = useState(true);
+    
+    const [isLoading, setIsLoading] = useState(true);
+    const [isStoreHydrated, setIsStoreHydrated] = useState(false);
+
+    const handleLogout = () => {
+        reset();
+        router.push("/");
+    }
 
     useEffect(() => {
+        setIsStoreHydrated(true);
+    }, []);
+
+    useEffect(() => {
+        if (!isStoreHydrated) return;
+
         if (!session || !qrTokenCode) {
             router.push("/");
+            return;
         }
-    }, [session, qrTokenCode, router]);
 
-    useEffect(() => {
         async function initializeWheel() {
             try {
                 const prizes = await api.getPrizes();
@@ -42,22 +53,18 @@ export function WheelPage() {
                         const totalSegments = prizes.length;
                         const segmentAngle = 360 / totalSegments;
                         const prizeRotation = 360 - (winningIndex * segmentAngle);
-                        
                         controls.set({ rotate: prizeRotation });
                     }
                 }
-
             } catch (error) {
                 console.error("Error loading prizes:", error);
             } finally {
-                setLoadingPrizes(false);
+                setIsLoading(false); 
             }
         }
         
-        if (session) {
-            initializeWheel();
-        }
-    }, [session, controls]);
+        initializeWheel();
+    }, [isStoreHydrated, session, qrTokenCode, router, controls]);
 
     const handleSpin = async () => {
         if (isSpinning || !session || !qrTokenCode) return;
@@ -76,14 +83,11 @@ export function WheelPage() {
             }
 
             const winningIndex = data.prizeIndex;
-
             const totalSegments = data.allPrizes.length; 
             const segmentAngle = 360 / totalSegments;
-
             const randomOffset = (Math.random() - 0.5) * (segmentAngle * 0.4); 
             
             const prizeRotation = 360 - (winningIndex * segmentAngle);
-        
             const totalRotation = 1800 + prizeRotation + randomOffset;
 
             await controls.start({
@@ -102,7 +106,7 @@ export function WheelPage() {
         } catch (error: any) {
             if(error.message.includes("stock is empty")) {
                 alert("Sorry, all prizes have been claimed.")
-            }else{
+            } else {
                 alert("An error occurred while spinning the wheel. Please try again.");
             }
             controls.set({ rotate: 0 });
@@ -113,7 +117,6 @@ export function WheelPage() {
 
     const createSlicePath = (index: number, total: number, radius: number) => {
         if (total <= 0) return "";
-        
         const angle = 360 / total;
         const startAngle = (index * angle) * (Math.PI / 180);
         const endAngle = ((index + 1) * angle) * (Math.PI / 180);
@@ -124,7 +127,8 @@ export function WheelPage() {
         return `M 50 50 L ${x1} ${y1} A ${radius} ${radius} 0 0 1 ${x2} ${y2} Z`;
     }
 
-    if (loadingPrizes) {
+    // Loading Screen (Prevents flickering during hydration)
+    if (isLoading) {
         return (
             <div className="flex h-screen w-full items-center justify-center text-white">
                 <Loader2 className="h-10 w-10 animate-spin" />
@@ -134,6 +138,16 @@ export function WheelPage() {
 
     return (
         <div className="flex flex-col items-center gap-8 py-10">
+            <div className="absolute top-4 right-4">
+                <button 
+                    onClick={handleLogout}
+                    className="p-2 bg-white/20 rounded-full hover:bg-white/40 transition-colors text-white"
+                    title="Logout"
+                >
+                    <LogOut size={20} />
+                </button>
+            </div>
+            
             <div className="relative w-80 h-80">
                 {/* Arrow */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 z-20">
@@ -166,7 +180,6 @@ export function WheelPage() {
                                         stroke="white" 
                                         strokeWidth="0.5" 
                                     />
-                                    {/* Prize Text */}
                                     <g transform={`translate(${textX}, ${textY}) rotate(${midAngle + 90})`}>
                                         <text 
                                             x="0" y="0" 
@@ -186,24 +199,25 @@ export function WheelPage() {
                     </svg>
                 </motion.div>
 
-                {/* Central button */}
                 <button 
                     onClick={handleSpin}
                     disabled={isSpinning || !!wonPrize}
                     className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center font-extrabold text-purple-600 hover:scale-105 transition-transform z-10 text-sm tracking-widest border-4 border-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    {isSpinning ? "..." : "SPIN"}
+                    {wonPrize ? "DONE" : (isSpinning ? "..." : "SPIN")}
                 </button>
             </div>
 
-            {/* Result card */}
+            {/* Result Card */}
             {wonPrize && (
                 <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-white p-6 rounded-xl shadow-2xl text-center border border-gray-100 w-full max-w-sm"
                 >
-                    <h2 className="text-2xl font-bold text-gray-800">Congratulations!</h2>
+                    <h2 className="text-2xl font-bold text-gray-800">
+                        {session?.hasSpun ? "You already won!" : "Congratulations!"}
+                    </h2>
                     <p className="text-gray-500 text-sm mt-1">You won:</p>
                     <div className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 my-4">
                         {wonPrize.name}
