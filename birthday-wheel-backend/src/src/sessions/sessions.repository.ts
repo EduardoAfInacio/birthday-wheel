@@ -91,12 +91,39 @@ export class SessionsRepository {
     });
   }
 
-  async findWinnersPaginated(skip: number, take: number) {
+  async findWinnersPaginated(
+    skip: number,
+    take: number,
+    search?: string,
+    store?: string,
+  ) {
+    const whereClause: any = {
+      hasSpun: true,
+      wonPrizeId: { not: null },
+    };
+
+    if (store && store !== 'all') {
+      whereClause.user = {
+        storeName: { equals: store, mode: 'insensitive' },
+      };
+    }
+
+    if (search) {
+      whereClause.AND = [
+        {
+          OR: [
+            { user: { name: { contains: search, mode: 'insensitive' } } },
+            { user: { email: { contains: search, mode: 'insensitive' } } },
+            { prize: { name: { contains: search, mode: 'insensitive' } } },
+          ],
+        },
+      ];
+    }
+
+    console.log('PRISMA WHERE:', JSON.stringify(whereClause, null, 2)); // Debug
+
     return this.prisma.client.userSpinSession.findMany({
-      where: {
-        hasSpun: true,
-        wonPrizeId: { not: null },
-      },
+      where: whereClause,
       include: { user: true, prize: true },
       orderBy: { spunAt: 'desc' },
       skip,
@@ -104,12 +131,32 @@ export class SessionsRepository {
     });
   }
 
-  async countWinners() {
+  async countWinners(search?: string, store?: string) {
+    const whereClause: any = {
+      hasSpun: true,
+      wonPrizeId: { not: null },
+    };
+
+    if (store && store !== 'all') {
+      whereClause.user = {
+        storeName: { equals: store, mode: 'insensitive' },
+      };
+    }
+
+    if (search) {
+      whereClause.AND = [
+        {
+          OR: [
+            { user: { name: { contains: search, mode: 'insensitive' } } },
+            { user: { email: { contains: search, mode: 'insensitive' } } },
+            { prize: { name: { contains: search, mode: 'insensitive' } } },
+          ],
+        },
+      ];
+    }
+
     return this.prisma.client.userSpinSession.count({
-      where: {
-        hasSpun: true,
-        wonPrizeId: { not: null },
-      },
+      where: whereClause,
     });
   }
 }

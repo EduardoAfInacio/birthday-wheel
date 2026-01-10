@@ -2,9 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { LogOut, Trophy, Calendar, User, Store, Phone, Loader2, ChevronLeft, ChevronRight, Mail } from "lucide-react";
+import { LogOut, Trophy, Calendar, User, Store, Phone, Loader2, ChevronLeft, ChevronRight, Mail, Search, Filter } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/src/components/ui/card";
 import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input"; 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/src/components/ui/select"; 
 import {
   Table,
   TableBody,
@@ -16,48 +24,59 @@ import {
 import { api } from "@/src/services/api";
 import { WinnerSession } from "@/src/types/api";
 
+const STORES = ["Center", "North", "South", "East", "West"];
+
 export default function Dashboard() {
   const [winners, setWinners] = useState<WinnerSession[]>([]);
   const [loading, setLoading] = useState(true);
-
+  
+  // Paginação
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
+
+  // Filtros
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedStore, setSelectedStore] = useState("all");
   
   const ITEMS_PER_PAGE = 6; 
 
   const router = useRouter();
 
   useEffect(() => {
-    const fetchWinners = async () => {
-      setLoading(true);
-      const token = localStorage.getItem("admin_token");
-      if (!token) {
-        router.push("/admin/login");
-        return;
-      }
+    const timer = setTimeout(() => {
+      fetchData();
+    }, 500); 
 
-      try {
-        const response = await api.getWinners(token, page, ITEMS_PER_PAGE);
-        
-        setWinners(response.data);
-        setTotalPages(response.meta.lastPage);
-        setTotalRecords(response.meta.total);
-        
-      } catch (error: any) {
-        if (error.message === "Unauthorized") {
-           localStorage.removeItem("admin_token");
-           router.push("/admin/login");
-        } else {
-           console.error(error);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
+    return () => clearTimeout(timer);
+  }, [page, searchTerm, selectedStore]); 
 
-    fetchWinners();
-  }, [router, page]);
+  const fetchData = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("admin_token");
+    if (!token) {
+      router.push("/admin/login");
+      return;
+    }
+
+    try {
+      const response = await api.getWinners(token, page, ITEMS_PER_PAGE, searchTerm, selectedStore);
+      
+      setWinners(response.data);
+      setTotalPages(response.meta.lastPage);
+      setTotalRecords(response.meta.total);
+      
+    } catch (error: any) {
+      if (error.message === "Unauthorized") {
+         localStorage.removeItem("admin_token");
+         router.push("/admin/login");
+      } else {
+         console.error(error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("admin_token");
@@ -72,15 +91,15 @@ export default function Dashboard() {
     if (page < totalPages) setPage(page + 1);
   };
 
-  if (loading && page === 1 && winners.length === 0) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400">
-        <div className="bg-white/90 p-4 rounded-full shadow-xl">
-            <Loader2 className="h-10 w-10 text-purple-600 animate-spin" />
-        </div>
-      </div>
-    );
-  }
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setPage(1); 
+  };
+
+  const handleStoreChange = (value: string) => {
+    setSelectedStore(value);
+    setPage(1); 
+  };
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 flex flex-col">
@@ -111,19 +130,50 @@ export default function Dashboard() {
       {/* Main Content */}
       <main className="flex-1 w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
         <Card className="shadow-2xl border-none overflow-hidden bg-white/95 backdrop-blur h-full flex flex-col">
-          <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 border-b border-gray-100">
+          
+          <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 border-b border-gray-100 space-y-4">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
                 <CardTitle className="text-lg font-semibold text-gray-800">Recent Winners</CardTitle>
-                <p className="text-sm text-gray-500 mt-1">Overview of all prizes claimed</p>
+                <p className="text-sm text-gray-500 mt-1">Manage and track prizes</p>
               </div>
               <div className="bg-white px-3 py-1 rounded-full text-xs font-medium text-gray-600 shadow-sm border border-gray-200 self-start">
                 Total: {totalRecords} records
               </div>
             </div>
+
+            {/* Filters */}
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+                <Input
+                  placeholder="Search by user, email or prize..."
+                  className="pl-9 bg-white border-gray-200"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                />
+              </div>
+              <div className="w-full sm:w-[180px]">
+                <Select value={selectedStore} onValueChange={handleStoreChange}>
+                  <SelectTrigger className="bg-white border-gray-200">
+                    <div className="flex items-center gap-2">
+                        <Filter className="h-3.5 w-3.5 text-gray-500"/>
+                        <SelectValue placeholder="Store" />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Stores</SelectItem>
+                    {STORES.map((store) => (
+                      <SelectItem key={store} value={store}>{store}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
           </CardHeader>
           
           <CardContent className="p-0 relative flex-1">
+            {/* Loading Overlay */}
             {loading && (
               <div className="absolute inset-0 bg-white/60 z-10 flex items-center justify-center backdrop-blur-[1px]">
                 <Loader2 className="h-8 w-8 text-purple-600 animate-spin" />
@@ -143,7 +193,6 @@ export default function Dashboard() {
                     <TableHead className="font-semibold">
                       <div className="flex items-center gap-2"><Trophy className="h-3 w-3" /> Prize</div>
                     </TableHead>
-                    {/* (hidden md:table-cell) */}
                     <TableHead className="font-semibold hidden md:table-cell">
                       <div className="flex items-center gap-2"><Store className="h-3 w-3" /> Store</div>
                     </TableHead>
@@ -159,7 +208,7 @@ export default function Dashboard() {
                   {winners.length === 0 && !loading ? (
                     <TableRow>
                       <TableCell colSpan={6} className="h-32 text-center text-gray-500">
-                        No winners found yet.
+                        No results found.
                       </TableCell>
                     </TableRow>
                   ) : (
@@ -173,13 +222,13 @@ export default function Dashboard() {
                           </div>
                         </TableCell>
                         
-                        {/* (Name + Email in mobile) */}
+                        {/* User */}
                         <TableCell>
                           <div className="font-medium text-gray-900 line-clamp-1">{s.user.name}</div>
                           <div className="text-xs text-gray-400 md:hidden line-clamp-1">{s.user.email}</div>
                         </TableCell>
 
-                        {/* Prêmio */}
+                        {/* Prize */}
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <div 
@@ -192,19 +241,19 @@ export default function Dashboard() {
                           </div>
                         </TableCell>
 
-                        {/*(Hidden Mobile) */}
+                        {/* Store */}
                         <TableCell className="hidden md:table-cell">
                           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 capitalize">
                             {s.user.storeName}
                           </span>
                         </TableCell>
 
-                        {/*(Hidden Mobile) */}
+                        {/* Contact */}
                         <TableCell className="text-gray-600 font-mono text-xs hidden md:table-cell">
                           {s.user.phone}
                         </TableCell>
 
-                        {/*(Hidden Tablet/Mobile) */}
+                        {/* Email */}
                         <TableCell className="text-right text-gray-600 font-mono text-xs pr-4 hidden lg:table-cell">
                           {s.user.email}
                         </TableCell>
@@ -216,7 +265,7 @@ export default function Dashboard() {
             </div>
           </CardContent>
 
-          {/* Footer Fixo */}
+          {/* Footer */}
           <CardFooter className="flex justify-between items-center bg-gray-50/50 p-4 border-t border-gray-100">
             <div className="text-xs text-gray-500">
               Page {page} of {totalPages || 1}

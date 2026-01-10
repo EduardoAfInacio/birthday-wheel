@@ -76,24 +76,29 @@ export const api = {
         return response.json();
     },
 
-    async getWinners(token: string, page = 1, limit = 2): Promise<WinnersResponse> {
-        const response = await fetch(`${BASE_URL}/sessions/winners?page=${page}&limit=${limit}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-        });
+async getWinners(token: string, page = 1, limit = 10, search = "", store = ""): Promise<WinnersResponse> {
+    const params = new URLSearchParams({
+        page: page.toString(),
+        limit: limit.toString(),
+    });
 
-        if(response.status === 401) {
-            throw new Error("Unauthorized");
-        }
+    if (search) params.append("search", search);
+    if (store && store !== "all") params.append("store", store);
 
-        if(!response.ok) {
-            const error = await response.json();
-            throw new Error(error.message || 'Failed to fetch winners');
-        }
-
-        return response.json();
+    const response = await fetch(`${BASE_URL}/sessions/winners?${params.toString()}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+    });
+    
+    if(response.status === 401) throw new Error("Unauthorized");
+    if(!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to fetch winners');
     }
+
+    return response.json();
+}
 }

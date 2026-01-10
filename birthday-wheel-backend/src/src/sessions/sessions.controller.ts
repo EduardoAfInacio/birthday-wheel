@@ -49,7 +49,14 @@ export class SessionsController {
   async getWinners(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(2), ParseIntPipe) limit: number,
+    @Query('search') search?: string,
+    @Query('store') store?: string,
   ) {
-    return await this.sessionsService.findAllWinners(page, limit);
+    return await this.sessionsService.findAllWinners(
+      page,
+      limit,
+      search,
+      store,
+    );
   }
 }

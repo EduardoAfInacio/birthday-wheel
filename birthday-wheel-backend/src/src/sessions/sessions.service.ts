@@ -95,11 +95,16 @@ export class SessionsService {
     return await this.sessionsRepository.bindPrizeToSession(sessionId, prizeId);
   }
 
-  async findAllWinners(page: number, limit: number) {
+  async findAllWinners(
+    page: number,
+    limit: number,
+    search?: string,
+    store?: string,
+  ) {
     const skip = (page - 1) * limit;
 
     const [data, total] = await Promise.all([
-      this.sessionsRepository.findWinnersPaginated(skip, limit),
+      this.sessionsRepository.findWinnersPaginated(skip, limit, search, store),
       this.sessionsRepository.countWinners(),
     ]);
 
