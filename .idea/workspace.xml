@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2427a19-95fd-4c8d-a845-f8bf0c5b737d" name="Changes" comment="" />
+    <list default="true" id="d2427a19-95fd-4c8d-a845-f8bf0c5b737d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -79,9 +81,9 @@
       <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\src" />
       <recent name="D:\NodeProjects\birthday-wheel\frontend\src" />
       <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src" />
-      <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\src" />
       <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\app" />
       <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\dto" />
     </key>
@@ -141,7 +143,8 @@
       <workItem from="1767975774102" duration="13805000" />
       <workItem from="1767994735550" duration="90000" />
       <workItem from="1767999496321" duration="3948000" />
-      <workItem from="1768016427388" duration="4510000" />
+      <workItem from="1768016427388" duration="5485000" />
+      <workItem from="1768034063086" duration="969000" />
     </task>
     <servers />
   </component>

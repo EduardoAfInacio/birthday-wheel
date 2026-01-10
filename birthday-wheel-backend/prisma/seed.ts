@@ -2,6 +2,7 @@
 import { PrismaClient } from '../src/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
+import * as bcrypt from 'bcrypt';
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -20,6 +21,17 @@ async function main() {
 
   console.log('🧹 Database cleaned.');
 
+  console.log('👮 Creating Admin...');
+  const password = await bcrypt.hash('admin123', 10);
+
+  await prisma.admin.upsert({
+    where: { email: 'admin@example.com' },
+    update: {},
+    create: {
+      email: 'admin@example.com',
+      password: password,
+    },
+  });
   // 2. CREATE PRIZES
   const prizesData = [
     {
