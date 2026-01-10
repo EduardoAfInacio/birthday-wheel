@@ -96,10 +96,31 @@ export class SessionsService {
     return await this.sessionsRepository.bindPrizeToSession(sessionId, prizeId);
   }
 
-  async unassignPrizeToSession(
-    sessionId: string,
-    prizeId: number,
-  ): Promise<void> {
-    await this.sessionsRepository.unbindPrizeFromSession(sessionId, prizeId);
+  async findAllWinners(page: number, limit: number) {
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      this.sessionsRepository.findWinnersPaginated(skip, limit),
+      this.sessionsRepository.countWinners(),
+    ]);
+
+    const formatedData = data.map((session) => ({
+      ...session,
+      prize: session.prize
+        ? {
+            ...session.prize,
+            price: session.prize.price.toString(),
+            weight: session.prize.weight.toString(),
+          }
+        : null,
+    }));
+    return {
+      data: formatedData,
+      meta: {
+        total,
+        page,
+        lastPage: Math.ceil(total / limit),
+      },
+    };
   }
 }

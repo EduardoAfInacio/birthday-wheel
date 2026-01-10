@@ -91,21 +91,24 @@ export class SessionsRepository {
     });
   }
 
-  async unbindPrizeFromSession(
-    sessionId: string,
-    prizeId: number,
-  ): Promise<UserSpinSessionGetPayload<{ include: { prize: true } }>> {
-    return this.prisma.client.userSpinSession.update({
-      where: { id: sessionId },
-      data: {
-        prize: { disconnect: true },
-        hasSpun: false,
-        spunAt: null,
+  async findWinnersPaginated(skip: number, take: number) {
+    return this.prisma.client.userSpinSession.findMany({
+      where: {
+        hasSpun: true,
+        wonPrizeId: { not: null },
       },
-      include: {
-        prize: true,
-        user: true,
-        token: true,
+      include: { user: true, prize: true },
+      orderBy: { spunAt: 'desc' },
+      skip,
+      take,
+    });
+  }
+
+  async countWinners() {
+    return this.prisma.client.userSpinSession.count({
+      where: {
+        hasSpun: true,
+        wonPrizeId: { not: null },
       },
     });
   }
