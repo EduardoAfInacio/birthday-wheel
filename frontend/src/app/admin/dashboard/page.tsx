@@ -24,7 +24,7 @@ export default function Dashboard() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
   
-  const ITEMS_PER_PAGE = 2; 
+  const ITEMS_PER_PAGE = 6; 
 
   const router = useRouter();
 
