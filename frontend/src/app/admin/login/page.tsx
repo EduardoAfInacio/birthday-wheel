@@ -12,7 +12,6 @@ import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
 
 import { api } from "@/src/services/api";
-import { LoginRequest } from "@/src/types/api";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
