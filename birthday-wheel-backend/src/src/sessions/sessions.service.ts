@@ -104,18 +104,8 @@ export class SessionsService {
       this.sessionsRepository.countWinners(),
     ]);
 
-    const formatedData = data.map((session) => ({
-      ...session,
-      prize: session.prize
-        ? {
-            ...session.prize,
-            price: session.prize.price.toString(),
-            weight: session.prize.weight.toString(),
-          }
-        : null,
-    }));
     return {
-      data: formatedData,
+      data,
       meta: {
         total,
         page,

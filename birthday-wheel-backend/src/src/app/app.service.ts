@@ -21,7 +21,7 @@ export class AppService {
     phone: string;
     store: string;
     qrTokenCode: string;
-  }): Promise<ParticipateResponseDto> {
+  }): Promise<any> {
     const qrToken = await this.qrTokenService.findQrTokenByCode(
       data.qrTokenCode,
     );
@@ -56,37 +56,23 @@ export class AppService {
       });
     }
 
-    let formattedPrize: any = null;
+    if (!session) throw new BadRequestException('Could not create session');
 
-    if (session?.prize) {
-      formattedPrize = {
-        ...session.prize,
-        price: session.prize.price.toString(),
-        weight: session.prize.weight.toString(),
-      };
-    }
-
-    return plainToInstance(
-      ParticipateResponseDto,
-      {
-        ...session,
-        sessionId: session?.id,
-        userId: user.id,
-        userName: user.name,
-        userEmail: user.email,
-        userPhone: user.phone,
-        prize: formattedPrize,
-      },
-      {
-        excludeExtraneousValues: true,
-      },
-    );
+    return {
+      ...session,
+      sessionId: session?.id,
+      userId: user.id,
+      userName: user.name,
+      userEmail: user.email,
+      userPhone: user.phone,
+      prize: session.prize,
+    };
   }
 
   async executeSpin(data: {
     userId: string;
     qrTokenCode: string;
-  }): Promise<SpinResponseDto> {
+  }): Promise<any> {
     const qrToken = await this.qrTokenService.findQrTokenByCode(
       data.qrTokenCode,
     );
@@ -114,27 +100,11 @@ export class AppService {
       spunAt: new Date(),
     });
 
-    const transformedWonPrize = {
-      ...wonPrize,
-      price: wonPrize.price.toString(),
-      weight: wonPrize.weight.toString(),
+    return {
+      success: true,
+      prizeIndex: prizeIndex,
+      wonPrize: wonPrize,
+      allPrizes: allPrizes,
     };
-
-    const transformedPrizes = allPrizes.map((prize) => ({
-      ...prize,
-      price: prize.price.toString(),
-      weight: prize.weight.toString(),
-    }));
-
-    return plainToInstance(
-      SpinResponseDto,
-      {
-        success: true,
-        prizeIndex: prizeIndex,
-        wonPrize: transformedWonPrize,
-        allPrizes: transformedPrizes,
-      },
-      { excludeExtraneousValues: true },
-    );
   }
 }
