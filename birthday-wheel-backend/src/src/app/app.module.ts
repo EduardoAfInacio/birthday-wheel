@@ -14,6 +14,9 @@ import { UsersRepository } from '../users/users.repository';
 import { PrizesRepository } from '../prizes/prizes.repository';
 import { QrtokenRepository } from '../qrtoken/qrtoken.repository';
 import { SessionsRepository } from '../sessions/sessions.repository';
+import { AuthModule } from '../auth/auth.module';
+import { AuthRepository } from '../auth/auth.repository';
+import { AuthService } from '../auth/auth.service';
 
 @Module({
   imports: [
@@ -22,18 +25,9 @@ import { SessionsRepository } from '../sessions/sessions.repository';
     QrtokenModule,
     PrizesModule,
     SessionsModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    UsersService,
-    UsersRepository,
-    PrizesService,
-    PrizesRepository,
-    QrtokenService,
-    QrtokenRepository,
-    SessionsService,
-    SessionsRepository,
-  ],
+  providers: [AppService],
 })
 export class AppModule {}

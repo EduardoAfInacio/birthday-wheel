@@ -6,5 +6,6 @@ import { PrizesRepository } from './prizes.repository';
 @Module({
   controllers: [PrizesController],
   providers: [PrizesService, PrizesRepository],
+  exports: [PrizesService],
 })
 export class PrizesModule {}

@@ -6,5 +6,6 @@ import { QrtokenRepository } from './qrtoken.repository';
 @Module({
   providers: [QrtokenService, QrtokenRepository],
   controllers: [QrtokenController],
+  exports: [QrtokenService],
 })
 export class QrtokenModule {}

@@ -21,5 +21,6 @@ import { PrizesRepository } from '../prizes/prizes.repository';
     PrizesService,
     PrizesRepository,
   ],
+  exports: [SessionsService],
 })
 export class SessionsModule {}
