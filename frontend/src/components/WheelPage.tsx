@@ -12,7 +12,7 @@ import { SpinResponse, Prize } from "@/src/types/api";
 export function WheelPage() {
     const controls = useAnimation();
     const router = useRouter();
-    const { session, qrTokenCode, reset } = useAppStore();
+    const { session, qrTokenCode, reset, setSpinResult } = useAppStore();
     
     const [isSpinning, setIsSpinning] = useState(false);
     const [wonPrize, setWonPrize] = useState<Prize | null>(null);
@@ -96,6 +96,8 @@ export function WheelPage() {
             });
 
             setWonPrize(data.wonPrize);
+
+            setSpinResult(data.wonPrize);
             
             confetti({
                 particleCount: 150,
@@ -104,10 +106,12 @@ export function WheelPage() {
             });
 
         } catch (error: any) {
-            if(error.message.includes("stock is empty")) {
+            if(error.message.includes("already spun")) {
+                alert("You have already played! Refreshing to show your prize.");
+            } else if(error.message.includes("stock is empty")) {
                 alert("Sorry, all prizes have been claimed.")
             } else {
-                alert("An error occurred while spinning the wheel. Please try again.");
+                alert("An error occurred. Please try again.");
             }
             controls.set({ rotate: 0 });
         } finally {
@@ -127,7 +131,6 @@ export function WheelPage() {
         return `M 50 50 L ${x1} ${y1} A ${radius} ${radius} 0 0 1 ${x2} ${y2} Z`;
     }
 
-    // Loading Screen (Prevents flickering during hydration)
     if (isLoading) {
         return (
             <div className="flex h-screen w-full items-center justify-center text-white">
