@@ -1,8 +1,9 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { PrizesService } from './prizes.service';
 import { CreatePrizeDto } from './dto/create-prize.dto';
 import { PrizeResponseDto } from './dto/prize.response.dto';
 import { plainToInstance } from 'class-transformer';
+import { Prize } from '../../generated/prisma/client';
 
 @Controller('prizes')
 export class PrizesController {
@@ -28,7 +29,13 @@ export class PrizesController {
   async getAvailablePrizes(): Promise<PrizeResponseDto[]> {
     const prizes = await this.prizesService.getDisplayPrizes();
 
-    return plainToInstance(PrizeResponseDto, prizes, {
+    const transformedPrizes = prizes.map((prize: Prize) => ({
+      ...prize,
+      weight: prize.weight.toString(),
+      price: prize.price.toString(),
+    }));
+
+    return plainToInstance(PrizeResponseDto, transformedPrizes, {
       excludeExtraneousValues: true,
     });
   }

@@ -6,6 +6,7 @@ import { plainToInstance } from 'class-transformer';
 import { ParticipateResponseDto } from './dto/participate.response.dto';
 import { PrizesService } from '../prizes/prizes.service';
 import { SpinResponseDto } from './dto/spin.response.dto';
+import { Prize } from '../../generated/prisma/client';
 
 @Injectable()
 export class AppService {
@@ -56,14 +57,26 @@ export class AppService {
       });
     }
 
+    let formattedPrize: any = null;
+
+    if (session?.prize) {
+      formattedPrize = {
+        ...session.prize,
+        price: session.prize.price.toString(),
+        weight: session.prize.weight.toString(),
+      };
+    }
+
     return plainToInstance(
       ParticipateResponseDto,
       {
         ...session,
+        sessionId: session?.id,
         userId: user.id,
         userName: user.name,
         userEmail: user.email,
         userPhone: user.phone,
+        prize: formattedPrize,
       },
       {
         excludeExtraneousValues: true,
@@ -102,13 +115,25 @@ export class AppService {
       spunAt: new Date(),
     });
 
+    const transformedWonPrize = {
+      ...wonPrize,
+      price: wonPrize.price.toString(),
+      weight: wonPrize.weight.toString(),
+    };
+
+    const transformedPrizes = allPrizes.map((prize) => ({
+      ...prize,
+      price: prize.price.toString(),
+      weight: prize.weight.toString(),
+    }));
+
     return plainToInstance(
       SpinResponseDto,
       {
         success: true,
         prizeIndex: prizeIndex,
-        wonPrize: wonPrize,
-        allPrizes: allPrizes,
+        wonPrize: transformedWonPrize,
+        allPrizes: transformedPrizes,
       },
       { excludeExtraneousValues: true },
     );

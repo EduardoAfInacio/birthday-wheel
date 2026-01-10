@@ -27,18 +27,37 @@ export function WheelPage() {
     }, [session, qrTokenCode, router]);
 
     useEffect(() => {
-        async function fetchInitialPrizes() {
+        async function initializeWheel() {
             try {
                 const prizes = await api.getPrizes();
                 setDisplayPrizes(prizes);
+
+                if (session?.prize && session.hasSpun) {
+                    const savedPrize = session.prize;
+                    setWonPrize(savedPrize); 
+                    
+                    const winningIndex = prizes.findIndex((p: Prize) => p.id === savedPrize.id);
+                    
+                    if (winningIndex !== -1) {
+                        const totalSegments = prizes.length;
+                        const segmentAngle = 360 / totalSegments;
+                        const prizeRotation = 360 - (winningIndex * segmentAngle);
+                        
+                        controls.set({ rotate: prizeRotation });
+                    }
+                }
+
             } catch (error) {
                 console.error("Error loading prizes:", error);
             } finally {
                 setLoadingPrizes(false);
             }
         }
-        fetchInitialPrizes();
-    }, []);
+        
+        if (session) {
+            initializeWheel();
+        }
+    }, [session, controls]);
 
     const handleSpin = async () => {
         if (isSpinning || !session || !qrTokenCode) return;
