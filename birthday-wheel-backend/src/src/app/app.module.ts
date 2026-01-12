@@ -6,17 +6,10 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { QrtokenModule } from '../qrtoken/qrtoken.module';
 import { PrizesModule } from '../prizes/prizes.module';
 import { SessionsModule } from '../sessions/sessions.module';
-import { UsersService } from '../users/users.service';
-import { PrizesService } from '../prizes/prizes.service';
-import { QrtokenService } from '../qrtoken/qrtoken.service';
-import { SessionsService } from '../sessions/sessions.service';
-import { UsersRepository } from '../users/users.repository';
-import { PrizesRepository } from '../prizes/prizes.repository';
-import { QrtokenRepository } from '../qrtoken/qrtoken.repository';
-import { SessionsRepository } from '../sessions/sessions.repository';
 import { AuthModule } from '../auth/auth.module';
-import { AuthRepository } from '../auth/auth.repository';
-import { AuthService } from '../auth/auth.service';
+import { BullModule } from '@nestjs/bull';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { EmailConsumer } from '../email/email.consumer';
 
 @Module({
   imports: [
@@ -26,8 +19,40 @@ import { AuthService } from '../auth/auth.service';
     PrizesModule,
     SessionsModule,
     AuthModule,
+    BullModule.forRoot({
+      redis: {
+        host: process.env.REDIS_HOST || 'localhost',
+        port: Number(process.env.REDIS_PORT) || 6379,
+        password: process.env.REDIS_PASSWORD || '123',
+      },
+    }),
+    BullModule.registerQueue({
+      name: 'email-queue',
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: process.env.MAIL_HOST || 'localhost',
+        port: Number(process.env.MAIL_PORT) || 1025,
+        secure: false,
+        ignoreTLS: true,
+        ...(process.env.MAIL_USER
+          ? {
+              auth: {
+                user: process.env.MAIL_USER,
+                pass: process.env.MAIL_PASS,
+              },
+            }
+          : {}),
+      },
+      defaults: {
+        from: {
+          name: 'Birthday wheel',
+          address: process.env.MAIL_FROM || 'noreply@birthdaywheel.com',
+        },
+      },
+    }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, EmailConsumer],
 })
 export class AppModule {}
