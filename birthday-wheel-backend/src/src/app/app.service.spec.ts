@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getQueueToken } from '@nestjs/bull';
 import { BadRequestException } from '@nestjs/common';
-import { QrtokenService } from '../src/src/qrtoken/qrtoken.service';
-import { UsersService } from '../src/src/users/users.service';
-import { SessionsService } from '../src/src/sessions/sessions.service';
-import { PrizesService } from '../src/src/prizes/prizes.service';
-import { AppService } from '../src/src/app/app.service';
+import { QrtokenService } from '../qrtoken/qrtoken.service';
+import { UsersService } from '../users/users.service';
+import { SessionsService } from '../sessions/sessions.service';
+import { PrizesService } from '../prizes/prizes.service';
+import { AppService } from './app.service';
 
 const mockQrTokenService = { findQrTokenByCode: jest.fn() };
 const mockUsersService = { upsertUser: jest.fn(), findUserById: jest.fn() };

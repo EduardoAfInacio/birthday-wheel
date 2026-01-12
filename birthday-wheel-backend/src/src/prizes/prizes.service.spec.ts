@@ -1,8 +1,8 @@
-import { PrizesService } from '../src/src/prizes/prizes.service';
+import { PrizesService } from './prizes.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrizesRepository } from '../src/src/prizes/prizes.repository';
+import { PrizesRepository } from './prizes.repository';
 import { BadRequestException } from '@nestjs/common';
-import { Decimal } from '../src/generated/prisma/internal/prismaNamespace';
+import { Decimal } from '../../generated/prisma/internal/prismaNamespace';
 
 const mockPrizesRepository = {
   findActivePrizes: jest.fn(),

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
-import { UsersService } from '../src/src/users/users.service';
-import { UsersRepository } from '../src/src/users/users.repository';
+import { UsersService } from './users.service';
+import { UsersRepository } from './users.repository';
 
 const mockUsersRepo = {
   upsertByPhone: jest.fn(),

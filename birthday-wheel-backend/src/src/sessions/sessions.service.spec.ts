@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BadRequestException } from '@nestjs/common';
-import { SessionsRepository } from '../src/src/sessions/sessions.repository';
-import { UsersService } from '../src/src/users/users.service';
-import { QrtokenService } from '../src/src/qrtoken/qrtoken.service';
-import { PrizesService } from '../src/src/prizes/prizes.service';
-import { SessionsService } from '../src/src/sessions/sessions.service';
+import { SessionsRepository } from './sessions.repository';
+import { UsersService } from '../users/users.service';
+import { QrtokenService } from '../qrtoken/qrtoken.service';
+import { PrizesService } from '../prizes/prizes.service';
+import { SessionsService } from './sessions.service';
 
 const mockSessionsRepo = {
   createSession: jest.fn(),
