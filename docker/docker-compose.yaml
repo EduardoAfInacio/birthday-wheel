@@ -28,7 +28,7 @@ services:
     networks:
       - birthday-wheel-network
 
-  # Redis Commander (Redis GUI - opcional, para desenvolvimento)
+  # Redis Commander (Redis GUI - dev)
   redis-commander:
     image: rediscommander/redis-commander:latest
     container_name: birthday-wheel-redis-commander
@@ -44,7 +44,7 @@ services:
     profiles:
       - dev
 
-  # MailHog (SMTP server para testes - opcional, para desenvolvimento)
+  # MailHog (SMTP server - dev)
   mailhog:
     image: mailhog/mailhog:latest
     container_name: birthday-wheel-mailhog
