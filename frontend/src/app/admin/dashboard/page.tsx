@@ -39,7 +39,7 @@ export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStore, setSelectedStore] = useState("all");
   
-  const ITEMS_PER_PAGE = 6; 
+  const ITEMS_PER_PAGE = 10; 
 
   const router = useRouter();
 
