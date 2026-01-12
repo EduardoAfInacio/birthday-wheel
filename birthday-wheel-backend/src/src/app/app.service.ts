@@ -3,7 +3,8 @@ import { QrtokenService } from '../qrtoken/qrtoken.service';
 import { UsersService } from '../users/users.service';
 import { SessionsService } from '../sessions/sessions.service';
 import { PrizesService } from '../prizes/prizes.service';
-
+import { InjectQueue } from '@nestjs/bull';
+import type { Queue } from 'bull';
 
 @Injectable()
 export class AppService {
@@ -12,6 +13,7 @@ export class AppService {
     private readonly usersService: UsersService,
     private readonly sessionsService: SessionsService,
     private readonly prizesService: PrizesService,
+    @InjectQueue('email-queue') private emailQueue: Queue,
   ) {}
   async startFlow(data: {
     name: string;
@@ -97,6 +99,30 @@ export class AppService {
       wonPrizeId: wonPrize.id,
       spunAt: new Date(),
     });
+
+    const user = await this.usersService.findUserById(data.userId);
+
+    if (user && user.email) {
+      await this.emailQueue.add(
+        'send-prize-email',
+        {
+          user: {
+            name: user.name,
+            email: user.email,
+          },
+          prize: {
+            name: wonPrize.name,
+            description: wonPrize.description,
+            id: wonPrize.id,
+          },
+        },
+        {
+          attempts: 3,
+          backoff: 10000,
+          removeOnComplete: true,
+        },
+      );
+    }
 
     return {
       success: true,
