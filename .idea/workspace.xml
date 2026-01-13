@@ -16,6 +16,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="TypeScript File" />
+        <option value="Dockerfile" />
       </list>
     </option>
   </component>
@@ -81,11 +82,11 @@
       <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\src\users" />
+      <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\src\sessions" />
+      <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\src\prizes" />
+      <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\src\app" />
       <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\src" />
-      <recent name="D:\NodeProjects\birthday-wheel\frontend\src" />
-      <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src" />
-      <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\app" />
-      <recent name="D:\NodeProjects\birthday-wheel\birthday-wheel-backend\src\dto" />
     </key>
   </component>
   <component name="RunManager">
@@ -146,7 +147,9 @@
       <workItem from="1768016427388" duration="5485000" />
       <workItem from="1768034063086" duration="15410000" />
       <workItem from="1768228445312" duration="14333000" />
-      <workItem from="1768251278418" duration="4445000" />
+      <workItem from="1768251278418" duration="5930000" />
+      <workItem from="1768263213602" duration="3156000" />
+      <workItem from="1768315226691" duration="5780000" />
     </task>
     <servers />
   </component>
