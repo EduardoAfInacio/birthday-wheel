@@ -18,7 +18,7 @@ mkdir -p /app
 cd /app
 git clone ${git_repo_url} .
 
-cat <<EOF > .env
+cat <<EOF > /app/birthday-wheel-backend/.env
 NODE_ENV=production
 PORT=3000
 DATABASE_URL=postgresql://postgres:${db_password}@${db_endpoint}/birthday_wheel?schema=public
@@ -29,7 +29,14 @@ MAIL_HOST=localhost
 MAIL_PORT=1025
 EOF
 
+cd /app/docker
 docker compose -f docker-compose.prod.yml up -d --build
+
+sleep 10
+
+docker compose -f docker-compose.prod.yml exec -T backend npx prisma migrate deploy
+
+docker compose -f docker-compose.prod.yml exec -T backend npx prisma db seed
 
 cat <<EOF > /etc/nginx/sites-available/default
 server {

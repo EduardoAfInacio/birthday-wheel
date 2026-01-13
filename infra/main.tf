@@ -99,7 +99,7 @@ resource "aws_instance" "backend" {
   vpc_security_group_ids = [aws_security_group.backend_sg.id]
 
   user_data = templatefile("user_data.sh", {
-    github_repo = var.github_repo
+    git_repo_url = var.github_repo
     db_password = var.db_password
     db_endpoint = aws_db_instance.postgres.endpoint
     domain_name = var.domain_name
@@ -118,26 +118,28 @@ resource "aws_amplify_app" "frontend" {
   access_token = var.github_token
 
   build_spec = <<-EOT
-    version: 1
-    frontend:
-      phases:
-        preBuild:
-          commands:
-            - npm ci
-        build:
-          commands:
-            - npm run build
-      artifacts:
-        baseDirectory: .next
-        files:
-          - '**/*'
-      cache:
-        paths:
-          - node_modules/**/*
-  EOT
+      version: 1
+      applications:
+        - appRoot: frontend
+          frontend:
+            phases:
+              preBuild:
+                commands:
+                  - npm ci
+              build:
+                commands:
+                  - npm run build
+            artifacts:
+              baseDirectory: .next
+              files:
+                - '**/*'
+            cache:
+              paths:
+                - node_modules/**/*
+    EOT
   
   environment_variables = {
-    NEXT_PUBLIC_API_URL = "http://${aws_instance.backend.public_ip}:3000" 
+    NEXT_PUBLIC_API_URL = "https://${var.domain_name}" 
   }
 }
 
