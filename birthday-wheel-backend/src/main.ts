@@ -13,6 +13,11 @@ async function bootstrap() {
   app.useGlobalInterceptors(new DecimalToStringInterceptor());
   app.enableCors({
     origin: '*',
+    //   origin: [
+    //   'http://localhost:4000',
+    //   'https://frontend.amplifyapp.com',
+    //   'https://www.mydomain.com'
+    // ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
   });
   app.useGlobalPipes(
