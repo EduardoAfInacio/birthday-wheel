@@ -1,0 +1,21 @@
+services:
+  backend:
+    build: ../birthday-wheel-backend
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=production
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=123
+    env_file:
+      - ../birthday-wheel-backend/.env
+    depends_on:
+      - redis
+  redis:
+    image: redis:7-alpine
+    restart: always
+    command: redis-server --requirepass 123 --maxmemory 128mb --maxmemory-policy allkeys-lru
+    ports:
+      - 6379:6379
