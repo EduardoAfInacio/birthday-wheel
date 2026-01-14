@@ -1,4 +1,5 @@
 #!/bin/bash
+
 apt-get update -y
 apt-get upgrade -y
 apt-get install -y git nginx certbot python3-certbot-nginx
@@ -6,7 +7,6 @@ apt-get install -y git nginx certbot python3-certbot-nginx
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
 usermod -aG docker ubuntu
-
 apt-get install -y docker-compose-plugin
 
 fallocate -l 2G /swapfile
@@ -19,6 +19,9 @@ mkdir -p /app
 cd /app
 git clone ${git_repo_url} .
 
+rm -f /app/birthday-wheel-backend/prisma.config.ts
+rm -f /app/birthday-wheel-backend/prisma.config.js
+
 cat <<EOF > /app/birthday-wheel-backend/.env
 NODE_ENV=production
 PORT=3000
@@ -30,14 +33,17 @@ MAIL_HOST=localhost
 MAIL_PORT=1025
 EOF
 
+
 cd /app/docker
+
 docker compose -f docker-compose.prod.yml up -d --build
 
-sleep 15
+echo "Aguardando DB subir..."
+sleep 20 
 
-docker compose -f docker-compose.prod.yml exec -T backend npx prisma migrate deploy
+docker compose -f docker-compose.prod.yml exec -T backend sh -c "npx prisma migrate deploy"
 
-docker compose -f docker-compose.prod.yml exec -T backend npx prisma db seed
+docker compose -f docker-compose.prod.yml exec -T backend node dist/prisma/seed.js
 
 cat <<EOF > /etc/nginx/sites-available/default
 server {
