@@ -19,8 +19,7 @@ mkdir -p /app
 cd /app
 git clone ${git_repo_url} .
 
-rm -f /app/birthday-wheel-backend/prisma.config.ts
-rm -f /app/birthday-wheel-backend/prisma.config.js
+find /app -name "prisma.config.*" -type f -delete
 
 cat <<EOF > /app/birthday-wheel-backend/.env
 NODE_ENV=production
@@ -37,7 +36,7 @@ cd /app/docker
 
 docker compose -f docker-compose.prod.yaml up -d --build
 
-echo "Aguardando DB iniciar..."
+echo "Waiting for db to start..."
 sleep 30
 
 docker compose -f docker-compose.prod.yaml exec -T backend sh -c "npx prisma migrate deploy"

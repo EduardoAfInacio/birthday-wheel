@@ -9,7 +9,7 @@ RUN npm ci
 
 COPY . .
 
-RUN rm -f prisma.config.ts prisma.config.js
+RUN find . -name "prisma.config.*" -type f -delete
 
 RUN npm run build
 RUN npx prisma generate
