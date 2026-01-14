@@ -22,6 +22,8 @@ RUN npm prune --production && npm cache clean --force
 
 FROM node:22-alpine
 
+RUN apk add --no-cache openssl
+
 WORKDIR /app
 
 COPY --from=builder /app/node_modules ./node_modules
