@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { api } from "../services/api";
 
 const formSchema = z.object({
@@ -46,7 +46,7 @@ const STORES = [
   { label: "West", value: "west" },
 ]
 
-export default function RegisterForm() {
+function RegisterFormContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const { session, setSession, setQrTokenCode, qrTokenCode } = useAppStore();
@@ -99,11 +99,7 @@ export default function RegisterForm() {
             });
 
             setSession(response);
-            if(response.hasSpun) {
-                router.push("/wheel");
-            } else {
-                router.push("/wheel");
-            }
+            router.push("/wheel");
         }catch (err: any) {
             setError(err.message || "An error occurred during registration.");
         }finally {
@@ -197,5 +193,13 @@ export default function RegisterForm() {
                 </Form>
             </CardContent>
         </Card>
+    )
+}
+
+export default function RegisterForm() {
+    return (
+        <Suspense fallback={<div className="text-white">Loading form...</div>}>
+            <RegisterFormContent />
+        </Suspense>
     )
 }
