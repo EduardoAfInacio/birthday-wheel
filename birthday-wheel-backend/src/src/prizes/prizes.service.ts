@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreatePrizeDto } from './dto/create-prize.dto';
 import { PrizesRepository } from './prizes.repository';
-import { Decimal } from '../../generated/prisma/internal/prismaNamespace';
-import { Prize } from '../../generated/prisma/client';
+import { Decimal } from '@prisma/client/runtime/library';
+import { Prize } from '@prisma/client';
 
 @Injectable()
 export class PrizesService {

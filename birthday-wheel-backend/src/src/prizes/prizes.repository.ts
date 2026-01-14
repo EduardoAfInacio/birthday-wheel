@@ -1,6 +1,6 @@
 import { PrismaService } from '../prisma/prisma.service';
-import { Prize } from '../../generated/prisma/client';
-import { Decimal } from '../../generated/prisma/internal/prismaNamespace';
+import { Prize } from '@prisma/client';
+import { Decimal } from '@prisma/client/runtime/library';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

@@ -1,20 +1,11 @@
-// prisma/seed.ts
-import { PrismaClient } from '../src/generated/prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
+import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
-const connectionString = process.env.DATABASE_URL;
-
-const pool = new Pool({ connectionString });
-const adapter = new PrismaPg(pool);
-
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient();
 
 async function main() {
   console.log('🌱 Starting seed...');
 
-  // 1. CLEANUP
   await prisma.userSpinSession.deleteMany();
   await prisma.qrToken.deleteMany();
   await prisma.prize.deleteMany();
@@ -32,7 +23,7 @@ async function main() {
       password: password,
     },
   });
-  // 2. CREATE PRIZES
+
   const prizesData = [
     {
       name: '5% OFF',
@@ -69,7 +60,7 @@ async function main() {
       description: 'Better luck next time',
       color: '#F0F0F0',
       weight: 8,
-      isLoss: true,
+      isLoss: true, // Importante para a lógica do jogo
     },
   ];
 
@@ -81,17 +72,18 @@ async function main() {
         name: p.name,
         description: p.description,
         color: p.color,
-        weight: p.weight, // O adaptador lida com Decimal automaticamente
+        weight: p.weight,
         price: 0,
         stock: 99999,
         initialStock: 99999,
         isActive: true,
-        isLoss: p.isLoss || false,
+        // Se p.isLoss for undefined, usa false
+        isLoss: (p as any).isLoss || false,
       },
     });
   }
 
-  // 3. CREATE QR TOKENS
+  // 4. CREATE QR TOKENS
   const tokens = ['TEST01', 'TEST02', 'TEST03', 'TEST04', 'TEST05', 'TEST06'];
 
   console.log('🎫 Creating QR Tokens...');
@@ -115,7 +107,6 @@ main()
   })
   .catch(async (e) => {
     console.error(e);
-    await pool.end();
     await prisma.$disconnect();
     process.exit(1);
   });

@@ -41,10 +41,7 @@ services:
       - birthday-wheel-network
     depends_on:
       - redis
-    profiles:
-      - dev
 
-  # MailHog (SMTP server - dev)
   mailhog:
     image: mailhog/mailhog:latest
     container_name: birthday-wheel-mailhog
@@ -54,8 +51,6 @@ services:
       - '8025:8025' # Web UI
     networks:
       - birthday-wheel-network
-    profiles:
-      - dev
 
 networks:
   birthday-wheel-network:

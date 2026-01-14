@@ -1,10 +1,6 @@
 import { PrismaService } from '../prisma/prisma.service';
 import { ConflictException, Injectable } from '@nestjs/common';
-import {
-  PrismaClientKnownRequestError,
-  UserSpinSessionGetPayload,
-} from '../../generated/prisma/internal/prismaNamespace';
-import { UserSpinSession } from '../../generated/prisma/client';
+import { Prisma, UserSpinSession } from '@prisma/client';
 
 @Injectable()
 export class SessionsRepository {
@@ -16,15 +12,16 @@ export class SessionsRepository {
     hasSpun?: boolean;
     spunAt?: Date;
     wonPrizeId?: number;
-  }): Promise<UserSpinSessionGetPayload<{ include: { prize: true } }> | null> {
+  }): Promise<Prisma.UserSpinSessionGetPayload<{ include: { prize: true } }> | null> {
     try {
       return await this.prisma.client.userSpinSession.create({
         data,
         include: { prize: true },
       });
     } catch (error) {
+      // CORREÇÃO: Usar Prisma.PrismaClientKnownRequestError
       if (
-        error instanceof PrismaClientKnownRequestError &&
+        error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === 'P2002'
       ) {
         throw new ConflictException(
@@ -38,7 +35,7 @@ export class SessionsRepository {
   async findByUserAndTokenIds(
     userId: string,
     tokenId: string,
-  ): Promise<UserSpinSessionGetPayload<{ include: { prize: true } }> | null> {
+  ): Promise<Prisma.UserSpinSessionGetPayload<{ include: { prize: true } }> | null> {
     return await this.prisma.client.userSpinSession.findUnique({
       where: {
         userId_tokenId: {
@@ -73,7 +70,7 @@ export class SessionsRepository {
   async bindPrizeToSession(
     sessionId: string,
     prizeId: number,
-  ): Promise<UserSpinSessionGetPayload<{ include: { prize: true } }>> {
+  ): Promise<Prisma.UserSpinSessionGetPayload<{ include: { prize: true } }>> {
     return this.prisma.client.userSpinSession.update({
       where: { id: sessionId },
       data: {

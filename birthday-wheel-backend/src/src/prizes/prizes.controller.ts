@@ -10,7 +10,7 @@ import { PrizesService } from './prizes.service';
 import { CreatePrizeDto } from './dto/create-prize.dto';
 import { PrizeResponseDto } from './dto/prize.response.dto';
 import { plainToInstance } from 'class-transformer';
-import { Prize } from '../../generated/prisma/client';
+import { Prize } from '@prisma/client';
 import {
   ApiBadRequestResponse,
   ApiOperation,

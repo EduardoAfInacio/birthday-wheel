@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { QrToken } from '../../generated/prisma/client';
+import { QrToken } from '@prisma/client';
 
 @Injectable()
 export class QrtokenRepository {

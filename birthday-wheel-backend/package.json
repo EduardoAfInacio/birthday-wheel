@@ -30,9 +30,8 @@
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^11.2.3",
-    "@prisma/adapter-pg": "^7.1.0",
-    "@prisma/client": "^7.1.0",
-    "prisma": "^7.1.0",
+    "@prisma/client": "5.22.0",
+    "prisma": "5.22.0",
     "axios": "^1.13.2",
     "bcrypt": "^6.0.0",
     "bull": "^4.16.5",
@@ -99,5 +98,8 @@
     "moduleNameMapper": {
       "^(\\.{1,2}/.*)\\.js$": "$1"
     }
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }

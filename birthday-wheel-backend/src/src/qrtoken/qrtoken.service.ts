@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { QrtokenRepository } from './qrtoken.repository';
-import { QrToken } from '../../generated/prisma/client';
+import { QrToken } from '@prisma/client';
 
 @Injectable()
 export class QrtokenService {

@@ -4,9 +4,9 @@ import {
   ExecutionContext,
   CallHandler,
 } from '@nestjs/common';
+import { Decimal } from '@prisma/client/runtime/library';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Decimal } from '@prisma/client/runtime/client';
 
 @Injectable()
 export class DecimalToStringInterceptor implements NestInterceptor {

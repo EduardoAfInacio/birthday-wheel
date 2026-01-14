@@ -2,8 +2,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { SessionsRepository } from './sessions.repository';
 import { UsersService } from '../users/users.service';
 import { QrtokenService } from '../qrtoken/qrtoken.service';
-import { UserSpinSessionGetPayload } from '../../generated/prisma/models/UserSpinSession';
 import { PrizesService } from '../prizes/prizes.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class SessionsService {
@@ -20,7 +20,7 @@ export class SessionsService {
     hasSpun?: boolean;
     spunAt?: string;
     wonPrizeId?: number;
-  }): Promise<UserSpinSessionGetPayload<{ include: { prize: true } }> | null> {
+  }): Promise<Prisma.UserSpinSessionGetPayload<{ include: { prize: true } }> | null> {
     const user = await this.usersService.findUserById(data.userId);
     const qrtoken = await this.qrTokenService.findQrTokenByCode(
       data.qrTokenCode,
@@ -45,7 +45,7 @@ export class SessionsService {
     hasSpun?: boolean;
     spunAt?: string;
     wonPrizeId?: number;
-  }): Promise<UserSpinSessionGetPayload<{ include: { prize: true } }> | null> {
+  }): Promise<Prisma.UserSpinSessionGetPayload<{ include: { prize: true } }> | null> {
     return await this.sessionsRepository.createSession({
       userId: data.userId,
       tokenId: data.qrTokenId,
@@ -58,7 +58,7 @@ export class SessionsService {
   async findSessionByUserAndTokenIds(
     userId: string,
     tokenId: string,
-  ): Promise<UserSpinSessionGetPayload<{
+  ): Promise<Prisma.UserSpinSessionGetPayload<{
     include: { prize: true };
   }> | null> {
     return await this.sessionsRepository.findByUserAndTokenIds(userId, tokenId);
@@ -74,7 +74,7 @@ export class SessionsService {
   async assignPrizeToSession(
     sessionId: string,
     prizeId: number,
-  ): Promise<UserSpinSessionGetPayload<{ include: { prize: true } }>> {
+  ): Promise<Prisma.UserSpinSessionGetPayload<{ include: { prize: true } }>> {
     const prize = await this.prizesService.findByid(prizeId);
 
     if (!prize) {
