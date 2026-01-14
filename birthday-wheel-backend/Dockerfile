@@ -9,10 +9,14 @@ RUN npm ci
 
 COPY . .
 
+#REMOVING ANYTHING LEFT FROM PRISMA7
 RUN find . -name "prisma.config.*" -type f -delete
 
 RUN npm run build
+
 RUN npx prisma generate
+
+RUN npx tsc prisma/seed.ts --outDir dist/prisma --skipLibCheck --module commonjs --target es2022
 
 RUN npm prune --production && npm cache clean --force
 
