@@ -33,7 +33,7 @@ EOF
 cd /app/docker
 docker compose -f docker-compose.prod.yml up -d --build
 
-sleep 10
+sleep 15
 
 docker compose -f docker-compose.prod.yml exec -T backend npx prisma migrate deploy
 
