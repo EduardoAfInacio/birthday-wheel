@@ -85,6 +85,7 @@ resource "local_file" "ssh_key" {
 
 resource "aws_db_instance" "postgres" {
   identifier             = "${var.project_name}-db"
+  db_name                = "birthday_wheel"
   engine                 = "postgres"
   engine_version         = "16.3"
   instance_class         = "db.t3.micro"
