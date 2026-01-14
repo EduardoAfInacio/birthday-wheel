@@ -7,7 +7,7 @@ output "rds_endpoint" {
 }
 
 output "amplify_app_url" {
-  value = aws_amplify_branch.main.branch_name
+  value = "${aws_amplify_branch.main.branch_name}.${aws_amplify_app.frontend.default_domain}"
 }
 
 output "ssh_command" {

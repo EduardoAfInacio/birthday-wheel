@@ -8,7 +8,7 @@ variable "project_name" {
 
 variable "db_password" {
   description = "RDS password"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "github_token" {

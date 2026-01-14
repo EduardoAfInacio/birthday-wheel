@@ -8,15 +8,15 @@ terraform {
 
   backend "s3" {
     bucket         = "birthday-wheel-tfstate-eduardo"
-    key            = "prod/terraform.tfstate"         
+    key            = "prod/terraform.tfstate"
     region         = "us-east-1"
-    dynamodb_table = "birthday-wheel-tf-locks"       
+    dynamodb_table = "birthday-wheel-tf-locks"
     encrypt        = true
   }
 }
 
 provider "aws" {
-    region = var.aws_region
+  region = var.aws_region
 }
 
 resource "aws_security_group" "backend_sg" {
@@ -87,7 +87,7 @@ resource "aws_db_instance" "postgres" {
   identifier             = "${var.project_name}-db"
   engine                 = "postgres"
   engine_version         = "16.3"
-  instance_class         = "db.t3.micro" 
+  instance_class         = "db.t3.micro"
   allocated_storage      = 20
   storage_type           = "gp2"
   username               = "postgres"
@@ -100,26 +100,26 @@ resource "aws_db_instance" "postgres" {
 
 data "aws_ami" "ubuntu" {
   most_recent = true
-  owners = ["099720109477"]
+  owners      = ["099720109477"]
 
   filter {
-    name = "name"
+    name   = "name"
     values = ["ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*"]
   }
 }
 
 resource "aws_instance" "backend" {
-  ami = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
-  key_name = aws_key_pair.kp.key_name
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t3.micro"
+  key_name      = aws_key_pair.kp.key_name
 
   vpc_security_group_ids = [aws_security_group.backend_sg.id]
 
   user_data = templatefile("user_data.sh", {
     git_repo_url = var.github_repo
-    db_password = var.db_password
-    db_endpoint = aws_db_instance.postgres.endpoint
-    domain_name = var.domain_name
+    db_password  = var.db_password
+    db_endpoint  = aws_db_instance.postgres.endpoint
+    domain_name  = var.domain_name
   })
 
   depends_on = [aws_db_instance.postgres]
@@ -154,9 +154,9 @@ resource "aws_amplify_app" "frontend" {
               paths:
                 - node_modules/**/*
     EOT
-  
+
   environment_variables = {
-    NEXT_PUBLIC_API_URL = "https://${var.domain_name}" 
+    NEXT_PUBLIC_API_URL = "https://${var.domain_name}"
   }
 }
 
