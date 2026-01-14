@@ -33,17 +33,16 @@ MAIL_HOST=localhost
 MAIL_PORT=1025
 EOF
 
-
 cd /app/docker
 
-docker compose -f docker-compose.prod.yml up -d --build
+docker compose -f docker-compose.prod.yaml up -d --build
 
-echo "Aguardando DB subir..."
-sleep 20 
+echo "Aguardando DB iniciar..."
+sleep 30
 
-docker compose -f docker-compose.prod.yml exec -T backend sh -c "npx prisma migrate deploy"
+docker compose -f docker-compose.prod.yaml exec -T backend sh -c "npx prisma migrate deploy"
 
-docker compose -f docker-compose.prod.yml exec -T backend node dist/prisma/seed.js
+docker compose -f docker-compose.prod.yaml exec -T backend node dist/prisma/seed.js
 
 cat <<EOF > /etc/nginx/sites-available/default
 server {

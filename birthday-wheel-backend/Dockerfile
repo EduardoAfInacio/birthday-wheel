@@ -1,15 +1,25 @@
 FROM node:22-alpine AS builder
+
 WORKDIR /app
+
 COPY package*.json ./
 COPY prisma ./prisma/
-RUN npm ci
+
+RUN npm ci 
+
 COPY . .
+
+RUN rm -f prisma.config.ts prisma.config.js
+
 RUN npm run build
 RUN npx prisma generate
+
 RUN npm prune --production && npm cache clean --force
 
 FROM node:22-alpine
+
 WORKDIR /app
+
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/dist ./dist
