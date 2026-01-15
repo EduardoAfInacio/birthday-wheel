@@ -136,10 +136,35 @@ resource "aws_instance" "backend" {
   }
 }
 
+resource "aws_iam_role" "amplify_role" {
+  name = "${var.project_name}-amplify-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "amplify.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "amplify_role_attach" {
+  role       = aws_iam_role.amplify_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess-Amplify"
+}
+
 resource "aws_amplify_app" "frontend" {
   name         = "${var.project_name}-frontend"
   repository   = var.github_repo
   access_token = var.github_token
+
+  platform             = "WEB_COMPUTE" 
+  iam_service_role_arn = aws_iam_role.amplify_role.arn
 
   build_spec = <<-EOT
       version: 1
