@@ -28,8 +28,12 @@ DATABASE_URL=postgresql://postgres:${db_password}@${db_endpoint}/birthday_wheel?
 REDIS_HOST=redis
 REDIS_PORT=6379
 REDIS_PASSWORD=123
-MAIL_HOST=localhost
-MAIL_PORT=1025
+
+MAIL_HOST=${mail_host}
+MAIL_PORT=587
+MAIL_USER=${mail_user}
+MAIL_PASS=${mail_pass}
+MAIL_FROM=${mail_from}
 EOF
 
 cd /app/docker

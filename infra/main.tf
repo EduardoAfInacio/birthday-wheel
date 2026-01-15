@@ -127,6 +127,11 @@ resource "aws_instance" "backend" {
     db_password  = var.db_password
     db_endpoint  = aws_db_instance.postgres.endpoint
     domain_name  = var.domain_name
+
+    mail_host    = var.mail_host
+    mail_user    = var.mail_user
+    mail_pass    = var.mail_pass
+    mail_from    = var.mail_from
   })
 
   depends_on = [aws_db_instance.postgres]
