@@ -34,7 +34,10 @@ import { EmailConsumer } from '../email/email.consumer';
         host: process.env.MAIL_HOST || 'localhost',
         port: Number(process.env.MAIL_PORT) || 1025,
         secure: false,
-        ignoreTLS: true,
+        requireTLS: true,
+        tls: {
+          ciphers: 'SSLv3',
+        },
         ...(process.env.MAIL_USER
           ? {
               auth: {
