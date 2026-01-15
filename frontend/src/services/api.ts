@@ -6,7 +6,7 @@ import {
   WinnersResponse  
 } from "../types/api";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://localhost:3000';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 
 export const api = {

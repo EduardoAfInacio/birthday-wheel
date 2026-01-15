@@ -188,6 +188,7 @@ resource "aws_amplify_app" "frontend" {
     EOT
 
   environment_variables = {
+    AMPLIFY_MONOREPO_APP_ROOT = "frontend"
     NEXT_PUBLIC_API_URL = "https://${var.domain_name}"
   }
 }
